@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Kanban | Portafolio Empresas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F6F8FB; --text:#0B1220; --stroke:rgba(11,18,32,.10);
+      --brand:#188888; --brand2:#2E9191;
+      --shadow:0 22px 60px rgba(11,18,32,.10);
+      --radius:18px;
+      --ok:#16A34A; --warn:#D97706; --bad:#EF4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1400px;margin:0 auto;padding:18px 16px 60px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .logo{height:44px;width:auto}
+    h1{margin:0;font-size:16px;font-weight:950}
+    .muted{color:rgba(11,18,32,.7);font-weight:800;font-size:12px}
+    .btn{border:0;border-radius:14px;padding:10px 12px;background: var(--brand);color:#fff;font-weight:950;cursor:pointer;box-shadow:0 12px 26px rgba(24,136,136,.22)}
+    .btn2{background:transparent;color:rgba(11,18,32,.85);border:1px solid rgba(11,18,32,.16);box-shadow:none}
+    .nav{display:flex;gap:8px;flex-wrap:wrap}
+
+    .board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start}
+    .col{border:1px solid var(--stroke);background:rgba(255,255,255,.65);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;min-height:72vh}
+    .colHead{display:flex;justify-content:space-between;align-items:center;padding:12px 12px;border-bottom:1px solid var(--stroke);background:rgba(24,136,136,.06)}
+    .colHead b{font-size:12px;font-weight:950}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);font-weight:950;font-size:12px;background:#fff}
+    .drop{padding:10px;min-height:64vh}
+
+    .card{background:#fff;border:1px solid var(--stroke);border-radius:16px;box-shadow:0 10px 22px rgba(11,18,32,.06);padding:10px;margin-bottom:10px;cursor:grab}
+    .card:active{cursor:grabbing}
+    .card b{display:block;font-size:12px;font-weight:950}
+    .row{display:flex;justify-content:space-between;gap:10px;margin-top:6px}
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);font-weight:950;font-size:12px}
+    .A{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.10)}
+    .B{border-color:rgba(217,119,6,.35);background:rgba(217,119,6,.10)}
+    .C{border-color:rgba(239,68,68,.30);background:rgba(239,68,68,.08)}
+    a{color:inherit;text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .dragOver{outline:3px solid rgba(24,136,136,.25);outline-offset:-3px}
+
+    @media (max-width: 1200px){ .board{grid-template-columns:1fr 1fr} }
+    @media (max-width: 720px){ .board{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <img class="logo" src="/assets/logo-portafolio.png" alt="Portafolio"/>
+        <div style="min-width:0">
+          <h1>Kanban · Leads</h1>
+          <div class="muted">Arrastra tarjetas para cambiar el status</div>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="btn btn2" href="/admin">Tabla</a>
+        <a class="btn btn2" href="/admin/templates">Plantillas WhatsApp</a>
+        <a class="btn btn2" href="/admin/scoring">Scoring</a>
+        <form method="POST" action="/admin/logout" style="margin:0">
+          <button class="btn btn2" type="submit">Salir</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="board" id="board"></div>
+  </div>
+
+  <script>
+    const STATUSES = ["NUEVO","CONTACTADO","APROBADO","RECHAZADO"];
+    const $ = (id)=>document.getElementById(id);
+
+    function esc(s){
+      return String(s||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    async function fetchLeads(){
+      const params = new URLSearchParams();
+      params.set("limit","200");
+      const r = await fetch("/api/admin/leads?"+params.toString());
+      const j = await r.json();
+      return j.ok ? (j.rows||[]) : [];
+    }
+
+    async function setStatus(id, status){
+      await fetch("/api/admin/lead/"+encodeURIComponent(id)+"/status",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ status })
+      });
+    }
+
+    function cardHtml(row){
+      const tier = row.score_tier || "C";
+      const tag = `<span class="tag ${tier}">${esc(tier)} · ${esc(row.score ?? "—")}</span>`;
+      const owner = row.owner_email ? `Owner: ${esc(row.owner_email)}` : "Owner: —";
+      return `
+        <div class="card" draggable="true" data-id="${row.id}">
+          <b><a href="/admin/leads/${row.id}">${esc(row.negocio_nombre_comercial||"")}</a></b>
+          <div class="muted">${esc(row.negocio_razon_social||"")}</div>
+          <div class="row">
+            ${tag}
+            <span class="muted">${esc(row.rnc_estado||"")}</span>
+          </div>
+          <div class="muted" style="margin-top:6px">${owner}</div>
+        </div>
+      `;
+    }
+
+    function renderBoard(rows){
+      const grouped = {};
+      STATUSES.forEach(s=>grouped[s]=[]);
+      rows.forEach(r=>{
+        const s = (r.status||"NUEVO").toUpperCase();
+        if(!grouped[s]) grouped[s]=[];
+        grouped[s].push(r);
+      });
+
+      const board = $("board");
+      board.innerHTML = "";
+
+      STATUSES.forEach(status=>{
+        const col = document.createElement("div");
+        col.className = "col";
+        col.innerHTML = `
+          <div class="colHead">
+            <b>${esc(status)}</b>
+            <span class="pill">${grouped[status].length}</span>
+          </div>
+          <div class="drop" data-status="${esc(status)}"></div>
+        `;
+        const drop = col.querySelector(".drop");
+        drop.innerHTML = grouped[status].map(cardHtml).join("");
+        board.appendChild(col);
+      });
+
+      // drag handlers
+      let draggedId = null;
+      document.querySelectorAll(".card[draggable='true']").forEach(card=>{
+        card.addEventListener("dragstart", (e)=>{
+          draggedId = card.getAttribute("data-id");
+          e.dataTransfer.setData("text/plain", draggedId);
+        });
+      });
+
+      document.querySelectorAll(".drop").forEach(zone=>{
+        zone.addEventListener("dragover", (e)=>{ e.preventDefault(); zone.classList.add("dragOver"); });
+        zone.addEventListener("dragleave", ()=> zone.classList.remove("dragOver"));
+        zone.addEventListener("drop", async (e)=>{
+          e.preventDefault();
+          zone.classList.remove("dragOver");
+          const status = zone.getAttribute("data-status");
+          const id = e.dataTransfer.getData("text/plain") || draggedId;
+          if(!id) return;
+          await setStatus(id, status);
+          await boot();
+        });
+      });
+    }
+
+    async function boot(){
+      const rows = await fetchLeads();
+      renderBoard(rows);
+    }
+
+    boot();
+  </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Plantillas WhatsApp | Portafolio Empresas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F6F8FB; --text:#0B1220; --stroke:rgba(11,18,32,.10);
+      --brand:#188888; --brand2:#2E9191;
+      --shadow:0 22px 60px rgba(11,18,32,.10);
+      --radius:18px;
+      --ok:#16A34A; --warn:#D97706; --bad:#EF4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 16px 60px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .logo{height:44px;width:auto}
+    h1{margin:0;font-size:16px;font-weight:950}
+    .muted{color:rgba(11,18,32,.7);font-weight:800;font-size:12px}
+    .btn{border:0;border-radius:14px;padding:10px 12px;background: var(--brand);color:#fff;font-weight:950;cursor:pointer;box-shadow:0 12px 26px rgba(24,136,136,.22)}
+    .btn2{background:transparent;color:rgba(11,18,32,.85);border:1px solid rgba(11,18,32,.16);box-shadow:none}
+    .nav{display:flex;gap:8px;flex-wrap:wrap}
+
+    .card{border:1px solid var(--stroke);background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-top:12px}
+    label{display:block;font-size:12px;font-weight:950;margin:10px 0 6px}
+    input,textarea{width:100%;padding:12px;border-radius:14px;border:1px solid var(--stroke);outline:none;background:#fff}
+    textarea{min-height:120px;resize:vertical}
+    input:focus,textarea:focus{border-color:rgba(24,136,136,.6);box-shadow:0 0 0 4px rgba(24,136,136,.16)}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);font-weight:950;font-size:12px}
+    .ok{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.10)}
+    .warn{border-color:rgba(217,119,6,.35);background:rgba(217,119,6,.10)}
+    .bad{border-color:rgba(239,68,68,.30);background:rgba(239,68,68,.08)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <img class="logo" src="/assets/logo-portafolio.png" alt="Portafolio"/>
+        <div style="min-width:0">
+          <h1>Plantillas WhatsApp</h1>
+          <div class="muted">Variables: {id}, {negocio}, {responsable}, {rnc}</div>
+        </div>
+      </div>
+      <div class="nav">
+        <a class="btn btn2" href="/admin">Tabla</a>
+        <a class="btn btn2" href="/admin/kanban">Kanban</a>
+        <a class="btn btn2" href="/admin/scoring">Scoring</a>
+        <form method="POST" action="/admin/logout" style="margin:0">
+          <button class="btn btn2" type="submit">Salir</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <b style="font-size:12px;font-weight:950">Crear / editar</b>
+        <span id="msg" class="tag" style="display:none"></span>
+      </div>
+
+      <input type="hidden" id="tpl_id" />
+
+      <label>Nombre</label>
+      <input id="tpl_name" placeholder="Ej: Primer contacto" />
+
+      <label>Mensaje</label>
+      <textarea id="tpl_body" placeholder="Hola {responsable}... "></textarea>
+
+      <div class="row" style="margin-top:10px">
+        <label style="margin:0;display:flex;gap:8px;align-items:center;font-weight:950">
+          <input id="tpl_default" type="checkbox" />
+          Marcar como default
+        </label>
+        <button class="btn" id="btnSave">Guardar</button>
+        <button class="btn btn2" id="btnNew">Nuevo</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <b style="font-size:12px;font-weight:950">Listado</b>
+      <div class="muted" style="margin-top:6px">Click en una plantilla para cargarla arriba.</div>
+      <div id="list" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id)=>document.getElementById(id);
+
+    function esc(s){
+      return String(s||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function showMsg(text, kind){
+      const el = $("msg");
+      el.style.display = "inline-flex";
+      el.className = "tag " + (kind||"ok");
+      el.textContent = text;
+      setTimeout(()=>{ el.style.display = "none"; }, 1800);
+    }
+
+    function clearForm(){
+      $("tpl_id").value = "";
+      $("tpl_name").value = "";
+      $("tpl_body").value = "";
+      $("tpl_default").checked = false;
+    }
+
+    async function load(){
+      const r = await fetch("/api/admin/templates");
+      const j = await r.json();
+      const list = $("list");
+      list.innerHTML = "";
+      if(!j.ok) return;
+
+      (j.rows||[]).forEach(t=>{
+        const div = document.createElement("div");
+        div.style.border = "1px solid rgba(11,18,32,.10)";
+        div.style.borderRadius = "14px";
+        div.style.padding = "10px";
+        div.style.marginBottom = "10px";
+        div.style.background = "rgba(246,248,251,.55)";
+        div.innerHTML = `
+          <div class="row" style="justify-content:space-between">
+            <b style="font-size:12px">${esc(t.name)}</b>
+            ${t.is_default ? '<span class="tag ok">DEFAULT</span>' : ''}
+          </div>
+          <div class="muted" style="margin-top:6px;white-space:pre-wrap">${esc(t.body)}</div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn btn2" data-edit="${t.id}">Editar</button>
+            <button class="btn btn2" data-del="${t.id}">Eliminar</button>
+          </div>
+        `;
+        list.appendChild(div);
+
+        div.querySelector("[data-edit]").addEventListener("click", ()=>{
+          $("tpl_id").value = t.id;
+          $("tpl_name").value = t.name;
+          $("tpl_body").value = t.body;
+          $("tpl_default").checked = !!t.is_default;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        div.querySelector("[data-del]").addEventListener("click", async ()=>{
+          if(!confirm("Eliminar plantilla?")) return;
+          await fetch("/api/admin/templates/"+encodeURIComponent(t.id)+"/delete", { method: "POST" });
+          showMsg("Eliminada", "warn");
+          await load();
+          clearForm();
+        });
+      });
+    }
+
+    $("btnNew").addEventListener("click", (e)=>{ e.preventDefault(); clearForm(); });
+
+    $("btnSave").addEventListener("click", async (e)=>{
+      e.preventDefault();
+      const payload = {
+        id: $("tpl_id").value || undefined,
+        name: $("tpl_name").value.trim(),
+        body: $("tpl_body").value.trim(),
+        is_default: $("tpl_default").checked ? 1 : 0
+      };
+      const r = await fetch("/api/admin/templates", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(payload)
+      });
+      const j = await r.json();
+      if(j.ok){
+        showMsg("Guardado", "ok");
+        await load();
+        clearForm();
+      } else {
+        showMsg("Error", "bad");
+      }
+    });
+
+    load();
+  </script>
+</body>
+</html>

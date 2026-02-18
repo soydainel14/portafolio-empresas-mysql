@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Código Empresarial | Crear Código Empresarial</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+
+:root{
+  --bg:#F6F8FB;
+  --panel:#FFFFFF;
+  --text:#0B1220;
+  --muted: rgba(11,18,32,.70);
+  --stroke: rgba(11,18,32,.10);
+  --stroke2: rgba(11,18,32,.16);
+
+  --brand:#188888;
+
+  --ok:#16A34A;
+  --warn:#D97706;
+  --danger:#B91C1C;
+
+  --radius:18px;
+  --radius2:14px;
+
+  --shadow: 0 10px 34px rgba(11,18,32,.08);
+  --shadow2: 0 6px 18px rgba(11,18,32,.06);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:var(--text);
+  background: var(--bg);
+}
+
+.container{max-width:960px;margin:0 auto;padding:28px 16px 92px}
+
+/* Header (banco moderno: sobrio) */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo-img{height:44px;width:auto;display:block}
+.brand h1{
+  margin:0;
+  font-size:16px;
+  font-weight:950;
+  letter-spacing:-.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.brand small{display:block;color:var(--muted);font-weight:600;margin-top:2px}
+
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 12px;border-radius:999px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.78);
+  color: rgba(11,18,32,.78);
+  font-size:12px;font-weight:800;
+  backdrop-filter: blur(10px);
+}
+
+/* Intro */
+.hero{
+  border:1px solid var(--stroke);
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 18px 16px;
+  margin: 12px 0 18px;
+}
+.heroTitle{margin:0 0 6px;font-size:22px;font-weight:950;letter-spacing:-.03em}
+.heroDesc{margin:0;color:var(--muted);line-height:1.5;font-size:13px;font-weight:600}
+
+.heroMeta{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px}
+.metaTag{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 10px;border-radius:12px;
+  border:1px solid var(--stroke);
+  background: rgba(246,248,251,.65);
+  font-size:12px;font-weight:850;color: rgba(11,18,32,.85);
+}
+.dot{width:8px;height:8px;border-radius:99px;background:var(--brand);box-shadow:0 0 0 4px rgba(24,136,136,.10)}
+
+form{margin-top:0}
+
+.section{
+  border:1px solid var(--stroke);
+  background: var(--panel);
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow2);
+  margin: 16px 0;
+}
+.sectionHeader{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:12px;padding:18px 18px 14px;
+  background: #fff;
+  border-bottom:1px solid rgba(11,18,32,.08);
+}
+.sectionHeader h2{margin:0;font-size:14px;font-weight:950;letter-spacing:-.01em}
+.sectionHeader p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.45;font-weight:600}
+.badge{
+  padding:8px 10px;border-radius:999px;
+  font-size:11px;font-weight:900;
+  border:1px solid rgba(24,136,136,.28);
+  background: rgba(24,136,136,.08);
+  color: rgba(11,18,32,.86);
+  white-space:nowrap;
+}
+.sectionBody{padding:18px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid1{display:grid;grid-template-columns:1fr;gap:18px}
+
+label{display:block;font-size:12px;font-weight:850;margin:0 0 7px;color:rgba(11,18,32,.90)}
+.req::after{content:" *";color:var(--warn);font-weight:950}
+
+input,select,textarea{
+  width:100%;
+  border-radius: var(--radius2);
+  border:1px solid rgba(11,18,32,.12);
+  background:#fff;
+  color:var(--text);
+  outline:none;
+  font-size:14px;
+  transition: border .12s ease, box-shadow .12s ease;
+}
+input,select{height:52px;padding:0 16px}
+textarea{min-height:96px;resize:vertical;padding:14px 16px;line-height:1.45}
+
+input::placeholder,textarea::placeholder{color:rgba(11,18,32,.42)}
+input:focus,select:focus,textarea:focus{
+  border-color: rgba(24,136,136,.65);
+  box-shadow: 0 0 0 4px rgba(24,136,136,.12);
+}
+
+.hint{margin-top:7px;color:rgba(11,18,32,.62);font-size:11px;line-height:1.35;font-weight:600}
+
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.check{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:12px;border-radius: var(--radius2);
+  border:1px solid var(--stroke);
+  background: rgba(246,248,251,.55);
+}
+.check input{width:auto;height:auto;margin-top:2px}
+.check span{font-size:12px;color:rgba(11,18,32,.86);font-weight:750;line-height:1.25}
+
+.divider{height:1px;background:rgba(11,18,32,.08);margin:16px 0}
+
+/* Stepper (banco moderno) */
+.stepper{
+  margin: 10px 0 18px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.86);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow2);
+}
+.stepperTop{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.stepperTop b{font-size:12px;font-weight:950}
+.stepperTop span{font-size:11px;color:var(--muted);font-weight:650}
+.bar{height:8px;border-radius:999px;background:rgba(11,18,32,.06);overflow:hidden;margin-top:10px}
+.bar > i{display:block;height:100%;width:0%;background:var(--brand);border-radius:999px;transition:width .18s ease}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.step{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:999px;
+  border:1px solid var(--stroke);
+  background: rgba(246,248,251,.55);
+  font-size:11px;font-weight:900;color:rgba(11,18,32,.82);
+}
+.step .n{
+  width:18px;height:18px;border-radius:99px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background: rgba(11,18,32,.08);
+  font-size:11px;font-weight:950;
+}
+.step.active{border-color: rgba(24,136,136,.32);background: rgba(24,136,136,.08)}
+.step.active .n{background: rgba(24,136,136,.18)}
+.step.done{border-color: rgba(22,163,74,.26);background: rgba(22,163,74,.08)}
+.step.done .n{background: rgba(22,163,74,.18)}
+
+/* Inline validation */
+.fieldError{
+  margin-top:8px;
+  display:none;
+  color: var(--danger);
+  font-size:11px;
+  font-weight:850;
+  line-height:1.35;
+}
+.fieldError.show{display:block}
+.fieldWarn{
+  margin-top:10px;
+  display:none;
+  color: var(--warn);
+  font-size:11px;
+  font-weight:900;
+  line-height:1.35;
+}
+.fieldWarn.show{display:block}
+
+/* Summary modal */
+.modalOverlay{
+  position:fixed;inset:0;
+  background: rgba(11,18,32,.55);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  padding: 16px;
+  z-index:9999;
+}
+.modalOverlay.show{display:flex}
+.modal{
+  width:100%;
+  max-width: 760px;
+  background:#fff;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 22px 80px rgba(0,0,0,.35);
+  overflow:hidden;
+}
+.modalHead{padding:16px 18px;border-bottom:1px solid rgba(11,18,32,.10)}
+.modalHead h3{margin:0;font-size:14px;font-weight:950}
+.modalHead p{margin:6px 0 0;color:var(--muted);font-size:12px;font-weight:650;line-height:1.4}
+.modalBody{padding: 16px 18px;max-height: 56vh;overflow:auto}
+.sumGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sumItem{border:1px solid rgba(11,18,32,.10);background:rgba(246,248,251,.55);border-radius:14px;padding:12px}
+.sumItem b{display:block;font-size:11px;font-weight:950;color:rgba(11,18,32,.86)}
+.sumItem span{display:block;margin-top:6px;font-size:12px;font-weight:800;color:rgba(11,18,32,.82);word-break:break-word}
+.modalFoot{padding:14px 18px;border-top:1px solid rgba(11,18,32,.10);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+.ctaBar{
+  position:fixed;left:0;right:0;bottom:0;
+  background: rgba(255,255,255,.92);
+  border-top:1px solid var(--stroke);
+  backdrop-filter: blur(14px);
+  padding:12px 14px;
+}
+.ctaInner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ctaText{min-width:0}
+.ctaText b{display:block;font-size:12px}
+.ctaText span{display:block;font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:650}
+
+.btn{
+  appearance:none;border:1px solid rgba(24,136,136,.20);
+  cursor:pointer;
+  padding:14px 16px;border-radius: var(--radius2);
+  background: var(--brand);
+  color:white;
+  font-weight:950;font-size:14px;
+  letter-spacing:.2px;
+  box-shadow: 0 10px 22px rgba(24,136,136,.18);
+  display:inline-flex;align-items:center;gap:10px;
+  white-space:nowrap;
+  transition: transform .06s ease, filter .12s ease;
+}
+.btn:hover{filter: brightness(.98)}
+.btn:active{transform: translateY(1px)}
+.btn:disabled{opacity:.7;cursor:not-allowed}
+
+.btnSecondary{
+  background:transparent;color:rgba(11,18,32,.88);
+  border:1px solid var(--stroke2);
+  box-shadow:none;
+}
+
+/* Error UX (cerca del botón) */
+.formError{
+  margin-top:10px;
+  color: var(--danger);
+  font-size:12px;
+  font-weight:850;
+  line-height:1.35;
+}
+
+/* RNC UX: indicador y warning */
+.inputWrap{position:relative}
+.rncIndicator{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:11px;
+  font-weight:850;
+  color: rgba(11,18,32,.70);
+  display:none;
+  align-items:center;
+  gap:8px;
+  pointer-events:none;
+  background: rgba(255,255,255,.70);
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(11,18,32,.08);
+  backdrop-filter: blur(8px);
+}
+.rncIndicator.loading{display:inline-flex}
+.rncIndicator.loading::before{
+  content:"";
+  width:12px;height:12px;
+  border-radius:999px;
+  border:2px solid rgba(11,18,32,.16);
+  border-top-color: var(--brand);
+  animation: spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.rncWarn{
+  margin-top:8px;
+  display:none;
+  font-size:12px;
+  font-weight:850;
+  color: var(--warn);
+  line-height:1.35;
+}
+.rncWarn.show{display:block}
+
+/* Flash verde elegante al autocompletar */
+.flashOk{ animation: flashOk 820ms ease-in-out 1; }
+@keyframes flashOk{
+  0%{box-shadow:0 0 0 0 rgba(22,163,74,0); border-color: rgba(11,18,32,.12)}
+  35%{box-shadow:0 0 0 6px rgba(22,163,74,.16); border-color: rgba(22,163,74,.55)}
+  100%{box-shadow:0 0 0 0 rgba(22,163,74,0); border-color: rgba(11,18,32,.12)}
+}
+
+@media (max-width: 760px){
+  .grid{grid-template-columns:1fr}
+  .checks{grid-template-columns:1fr}
+  .heroTitle{font-size:20px}
+  .ctaInner{flex-direction:column;align-items:stretch}
+  .btn,.btnSecondary{justify-content:center;width:100%}
+  .ctaText span{white-space:normal}
+  .sumGrid{grid-template-columns:1fr}
+}
+
+</style>
+<!-- Optional Tracking (no se activa si IDs vacíos) -->
+<script>
+  (function(){
+    const fb = "{{FB_PIXEL_ID}}";
+    if(fb){
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', fb);
+      fbq('track', 'PageView');
+    }
+    const ga = "{{GA_MEASUREMENT_ID}}";
+    if(ga){
+      const s1=document.createElement('script'); s1.async=true; s1.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(ga);
+      document.head.appendChild(s1);
+      window.dataLayer=window.dataLayer||[];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag=gtag;
+      gtag('js', new Date());
+      gtag('config', ga);
+    }
+  })();
+</script>
+</head>
+<body>
+<div class="container">
+<div class="topbar">
+<div class="brand">
+<img alt="Código Empresarial" class="logo-img" src="/assets/logo-portafolio.png"/>
+<div style="min-width:0">
+<h1>Código Empresarial</h1>
+<small>Activación de Código Empresarial</small>
+</div>
+</div>
+<div class="pill" title="Tiempo estimado">Tiempo estimado: <span>3 minutos</span></div>
+</div>
+<div class="hero">
+
+
+<h2 class="heroTitle">Crear Código Empresarial</h2>
+<p class="heroDesc">
+            Este registro nos permite asignarte un ejecutivo, activar entregas programadas y habilitar facilidades de pago dentro de la plaza.
+          </p>
+<div class="heroMeta">
+<div class="metaTag"><span aria-hidden="true" class="dot"></span> Atención prioritaria</div>
+<div class="metaTag">Entregas directas</div>
+<div class="metaTag">Facturación organizada</div>
+
+</div>
+
+<div class="stepper" aria-label="Progreso del formulario">
+  <div class="stepperTop">
+    <b id="stepTitle">Paso 1 de 5</b>
+    <span id="stepHint">Completa los datos del negocio.</span>
+  </div>
+  <div class="bar" aria-hidden="true"><i id="stepBar"></i></div>
+  <div class="steps" id="stepsPills" aria-hidden="true"></div>
+</div>
+
+
+
+</div>
+<form action="/submit" id="leadForm" method="POST" novalidate="">
+<input id="recaptcha_token" name="recaptcha_token" type="hidden"/>
+<section class="section" data-step="1" data-step-title="Datos del Negocio" data-step-hint="Completa los datos del negocio.">
+<header class="sectionHeader">
+<div>
+<h2>1) Datos del Negocio</h2>
+<p>Información básica para crear tu perfil empresarial.</p>
+</div>
+<div class="badge">Obligatorio</div>
+</header>
+<div class="sectionBody">
+<div class="grid1">
+<div>
+<label class="req" for="negocio_nombre_comercial">Nombre comercial del negocio</label>
+<input autocomplete="organization" id="negocio_nombre_comercial" name="negocio_nombre_comercial" placeholder="Ej: Café Plaza Central" required=""/>
+<div class="hint">Como te conocen en la plaza (letrero / nombre público).</div>
+</div>
+<div class="grid">
+<div>
+<label for="negocio_razon_social">Razón social</label>
+<input autocomplete="organization" id="negocio_razon_social" name="negocio_razon_social" placeholder="Ej: Café Plaza Central, SRL"/>
+</div>
+<div>
+<label for="negocio_rnc">RNC</label>
+<div class="inputWrap">
+<input autocomplete="off" id="negocio_rnc" inputmode="numeric" name="negocio_rnc" pattern="(?:[0-9]{9}|[0-9]{11})" placeholder="Ej: 101234567 o 00123456789"/>
+<span aria-live="polite" class="rncIndicator" id="rncIndicator">Buscando…</span>
+</div>
+<div class="rncWarn" id="rncWarn">Atención: Este RNC figura como INACTIVO/SUSPENDIDO en la DGII.</div>
+</div>
+</div>
+<div class="grid">
+<div>
+<label class="req">Actividad principal</label>
+<select name="negocio_actividad" required="">
+<option value="">Seleccione…</option>
+<option>Restaurante / Cafetería</option>
+<option>Tienda Retail</option>
+<option>Oficina administrativa</option>
+<option>Consultorio / Clínica</option>
+<option>Servicio</option>
+<option>Otro</option>
+</select>
+</div>
+<div>
+<label>Si es “Otro”, especifique</label>
+<input name="negocio_actividad_otro" placeholder="Ej: Heladería"/>
+</div>
+</div>
+<div class="grid">
+<div>
+<label>Local / Número en la plaza</label>
+<input name="negocio_local_plaza" placeholder="Ej: Local B-12"/>
+</div>
+<div>
+<label>Cantidad aproximada de empleados</label>
+<select name="negocio_empleados">
+<option value="">Seleccione…</option>
+<option>1–3</option>
+<option>4–8</option>
+<option>9–20</option>
+<option>20+</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" data-step="2" data-step-title="Persona Responsable" data-step-hint="Agrega el contacto principal.">
+<header class="sectionHeader">
+<div>
+<h2>2) Persona Responsable</h2>
+<p>Contacto principal para coordinación y activación.</p>
+</div>
+<div class="badge">Obligatorio</div>
+</header>
+<div class="sectionBody">
+<div class="grid">
+<div>
+<label class="req">Nombre y apellido</label>
+<input name="responsable_nombre" placeholder="Ej: Juan Pérez" required=""/>
+</div>
+<div>
+<label>Cargo</label>
+<input name="responsable_cargo" placeholder="Ej: Administrador"/>
+</div>
+</div>
+<div class="grid">
+<div>
+<label class="req">Teléfono (WhatsApp)</label>
+<input inputmode="numeric" name="responsable_whatsapp" placeholder="Ej: 8095551234" required=""/>
+<div class="hint">Solo números (formato RD recomendado).</div>
+</div>
+<div>
+<label>Correo electrónico</label>
+<input name="responsable_email" placeholder="Ej: admin@negocio.com" type="email"/>
+</div>
+</div>
+<div class="grid">
+<div>
+<label>¿Quién autoriza compras normalmente?</label>
+<select name="autoriza_compras">
+<option value="">Seleccione…</option>
+<option>Administración</option>
+<option>Encargado de tienda</option>
+<option>Caja</option>
+<option>Dueño</option>
+<option>Otro</option>
+</select>
+</div>
+<div>
+<label>Si es “Otro”, especifique</label>
+<input name="autoriza_compras_otro" placeholder="Ej: Gerente general"/>
+</div>
+</div>
+</div>
+</section>
+<section class="section" data-step="3" data-step-title="Consumo Operativo" data-step-hint="Selecciona necesidades clave.">
+<header class="sectionHeader">
+<div>
+<h2>3) Consumo Operativo</h2>
+<p>Esto nos permite dimensionar tu operación y asignarte el plan correcto.</p>
+</div>
+<div class="badge">Clave</div>
+</header>
+<div class="sectionBody">
+<div class="grid">
+<div>
+<label>Frecuencia de compra</label>
+<select name="consumo_frecuencia">
+<option value="">Seleccione…</option>
+<option>Varias veces por semana</option>
+<option>Semanal</option>
+<option>Quincenal</option>
+<option>Mensual</option>
+<option>Solo cuando se acaba</option>
+</select>
+<div class="hint">Operativo, no financiero.</div>
+</div>
+<div>
+<label>Nota (opcional)</label>
+<textarea name="consumo_nota" placeholder="Ej: se usa más los fines de semana"></textarea>
+<div class="hint">Campo informativo.</div>
+</div>
+</div>
+<div class="divider"></div>
+<label>Productos que utilizan (pueden marcar varios)</label>
+<div class="checks">
+<label class="check"><input name="consumo_productos" type="checkbox" value="Rollos térmicos"/><span>Rollos térmicos</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Facturas / Comprobantes"/><span>Facturas / Comprobantes</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Tinta / Tóner"/><span>Tinta / Tóner</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Papel Bond"/><span>Papel Bond</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Sobres / Carpetas"/><span>Sobres / Carpetas</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Material de limpieza"/><span>Material de limpieza</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Impresiones urgentes"/><span>Impresiones urgentes</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Plastificados / Laminados"/><span>Plastificados / Laminados</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Etiquetas / Stickers"/><span>Etiquetas / Stickers</span></label>
+<label class="check"><input name="consumo_productos" type="checkbox" value="Otro"/><span>Otro</span></label>
+</div>
+<div style="margin-top:12px">
+<label>Si marcó “Otro”, especifique</label>
+<input name="consumo_productos_otro" placeholder="Ej: servilletas, guantes, etc.">
+</input></div>
+<div class="divider"></div>
+<label>Lo más importante (elige máximo 2)</label>
+<div class="checks">
+<label class="check"><input name="prioridades" type="checkbox" value="Rapidez de entrega"/><span>Rapidez de entrega</span></label>
+<label class="check"><input name="prioridades" type="checkbox" value="Crédito para pagar luego"/><span>Crédito para pagar luego</span></label>
+<label class="check"><input name="prioridades" type="checkbox" value="Precios estables"/><span>Precios estables</span></label>
+<label class="check"><input name="prioridades" type="checkbox" value="Evitar quedarse sin material"/><span>Evitar quedarse sin material</span></label>
+<label class="check"><input name="prioridades" type="checkbox" value="Facturación organizada"/><span>Facturación organizada</span></label>
+<label class="check"><input name="prioridades" type="checkbox" value="Un solo proveedor"/><span>Un solo proveedor</span></label>
+</div>
+<div class="hint">Si eliges más de 2, el sistema guardará solo las primeras 2.</div>
+</div>
+</section>
+<section class="section" data-step="4" data-step-title="Cuenta Empresarial" data-step-hint="Configura opciones comerciales (opcional).">
+<header class="sectionHeader">
+<div>
+<h2>4) Activación de Cuenta Empresarial</h2>
+<p>Incluye la facilidad de pago sin hacerlo “pesado”.</p>
+</div>
+<div class="badge">Opcional</div>
+</header>
+<div class="sectionBody">
+<div class="grid">
+<div>
+<label>¿Desea facilidad de pago a 30 días?</label>
+<select name="facilidad_30_dias">
+<option value="">Seleccione…</option>
+<option>Sí</option>
+<option>Prefiero prepago</option>
+</select>
+</div>
+<div>
+<label>¿Cómo prefiere recibir estados de cuenta?</label>
+<select name="estados_cuenta_por">
+<option value="">Seleccione…</option>
+<option>WhatsApp</option>
+<option>Correo</option>
+</select>
+</div>
+</div>
+</div>
+</section>
+<section class="section" data-step="5" data-step-title="Autorización" data-step-hint="Confirma y revisa antes de enviar.">
+<header class="sectionHeader">
+<div>
+<h2>5) Autorización</h2>
+<p>Confirmación final para crear el código en el sistema.</p>
+</div>
+<div class="badge">Obligatorio</div>
+</header>
+<div class="sectionBody">
+<p style="margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.45">
+            Autorizo a Código Empresarial a crear mi código empresarial y gestionar mis compras operativas bajo las condiciones comerciales acordadas.
+          </p>
+<label class="check" style="display:flex;align-items:flex-start;gap:10px;margin:0">
+<input name="acepta_terminos" required="" type="checkbox">
+<span><b style="display:block;font-size:12px">Acepto Términos y Política</b><span style="display:block;color:var(--muted);font-size:11px;margin-top:3px">Requerido para activar. Puedes leer: <a href="/terminos" rel="noopener" target="_blank">Términos</a> y <a href="/privacidad" rel="noopener" target="_blank">Privacidad</a>.</span></span>
+</input></label>
+<div class="divider"></div>
+<div class="grid">
+<div>
+<label>Nombre</label>
+<input name="autorizacion_nombre" placeholder="Nombre de quien autoriza">
+</input></div>
+<div>
+<label>Fecha</label>
+<input name="autorizacion_fecha" placeholder="DD/MM/AAAA">
+</input></div>
+</div>
+</div>
+</section>
+<button id="realSubmit" style="display:none" type="submit">Enviar</button>
+</form>
+</div>
+
+<!-- Summary modal -->
+<div class="modalOverlay" id="summaryOverlay" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
+  <div class="modal">
+    <div class="modalHead">
+      <h3 id="summaryTitle">Revisar y confirmar</h3>
+      <p>Verifica la información antes de enviar. Si algo no está correcto, puedes volver y editar.</p>
+    </div>
+    <div class="modalBody">
+      <div class="sumGrid" id="summaryGrid"></div>
+    </div>
+    <div class="modalFoot">
+      <button class="btn btnSecondary" id="summaryBack" type="button">Volver</button>
+      <button class="btn" id="summaryConfirm" type="button">Confirmar y enviar</button>
+    </div>
+  </div>
+</div>
+<div class="ctaBar">
+<div class="ctaInner">
+<div class="ctaText">
+<b id="ctaTitle">Paso 1 de 5</b>
+<span id="ctaDesc">Completa los datos del negocio para continuar.</span>
+</div>
+<div style="display:flex;gap:10px;align-items:center">
+<button class="btn btnSecondary" id="prevBtn" type="button">← Atrás</button>
+<button class="btn" id="nextBtn" type="button">Siguiente →</button>
+</div>
+</div>
+</div>
+<script>
+    function scrollToTop() {
+      // Robust scroll-to-top across browsers (including iOS Safari)
+      try { window.scrollTo({ top: 0, left: 0, behavior: "smooth" }); }
+      catch (e) { window.scrollTo(0, 0); }
+
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      const topEl = document.querySelector(".container");
+      if (topEl && topEl.scrollIntoView) {
+        try { topEl.scrollIntoView({ behavior: "smooth", block: "start" }); }
+        catch(e) { topEl.scrollIntoView(true); }
+      }
+    }
+
+    // max 2 prioridades (sin alert, estilo banco)
+    const priorityChecks = Array.from(document.querySelectorAll('input[name="prioridades"]'));
+    const prioritiesWarnId = "prioridadesWarn";
+    function ensurePrioritiesWarn() {
+      let el = document.getElementById(prioritiesWarnId);
+      if (el) return el;
+      const container = priorityChecks[0]?.closest(".sectionBody");
+      if (!container) return null;
+      el = document.createElement("div");
+      el.id = prioritiesWarnId;
+      el.className = "fieldWarn";
+      el.textContent = "Selecciona máximo 2 prioridades.";
+      // ubicarlo después del hint
+      const hint = container.querySelector(".hint");
+      if (hint && hint.parentElement) hint.parentElement.appendChild(el);
+      else container.appendChild(el);
+      return el;
+    }
+    priorityChecks.forEach((ch) => {
+      ch.addEventListener("change", () => {
+        const checked = priorityChecks.filter((x) => x.checked);
+        if (checked.length > 2) {
+          ch.checked = false;
+          const w = ensurePrioritiesWarn();
+          if (w) {
+            w.classList.add("show");
+            setTimeout(() => w.classList.remove("show"), 2600);
+          }
+        }
+      });
+    });
+
+    // --- Stepper + navegación
+    const form = document.getElementById("leadForm");
+    const sections = Array.from(document.querySelectorAll("form#leadForm section.section"));
+    const totalSteps = sections.length;
+    let current = 0;
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const ctaTitle = document.getElementById("ctaTitle");
+    const ctaDesc = document.getElementById("ctaDesc");
+
+    const stepTitle = document.getElementById("stepTitle");
+    const stepHint = document.getElementById("stepHint");
+    const stepBar = document.getElementById("stepBar");
+    const stepsPills = document.getElementById("stepsPills");
+
+    const summaryOverlay = document.getElementById("summaryOverlay");
+    const summaryGrid = document.getElementById("summaryGrid");
+    const summaryBack = document.getElementById("summaryBack");
+    const summaryConfirm = document.getElementById("summaryConfirm");
+
+    // Construye pills
+    (function buildPills(){
+      if (!stepsPills) return;
+      stepsPills.innerHTML = "";
+      sections.forEach((sec, idx) => {
+        const title = sec.getAttribute("data-step-title") || `Paso ${idx+1}`;
+        const el = document.createElement("div");
+        el.className = "step";
+        el.innerHTML = `<span class="n">${idx+1}</span>${title}`;
+        el.addEventListener("click", () => {
+          // permitir retroceder o avanzar solo si los anteriores están válidos
+          if (idx <= current) return showStep(idx);
+          if (validateUpTo(idx - 1)) showStep(idx);
+        });
+        stepsPills.appendChild(el);
+      });
+    })();
+
+    function setInlineError(field, msg) {
+      if (!field) return;
+      let holder = field.closest("div");
+      // si está en inputWrap, sube un nivel
+      if (holder && holder.classList.contains("inputWrap")) holder = holder.parentElement;
+      if (!holder) holder = field.parentElement;
+      let err = holder.querySelector(".fieldError");
+      if (!err) {
+        err = document.createElement("div");
+        err.className = "fieldError";
+        holder.appendChild(err);
+      }
+      if (msg) {
+        err.textContent = msg;
+        err.classList.add("show");
+        field.setAttribute("aria-invalid", "true");
+      } else {
+        err.textContent = "";
+        err.classList.remove("show");
+        field.removeAttribute("aria-invalid");
+      }
+    }
+
+    function friendlyMessage(field) {
+      const name = field.getAttribute("name") || "";
+      const label = document.querySelector(`label[for="${field.id}"]`)?.textContent?.trim() || "Este campo";
+      if (field.validity.valueMissing) return `${label} es obligatorio.`;
+      if (field.validity.typeMismatch && field.type === "email") return `Correo inválido.`;
+      if (field.validity.patternMismatch) return `${label}: formato inválido.`;
+      if (name === "responsable_whatsapp") return `Teléfono inválido (solo números).`;
+      if (name === "negocio_rnc") return `RNC/Cédula inválido (9 u 11 dígitos).`;
+      return `${label}: revisa este campo.`;
+    }
+
+    function validateSection(idx) {
+      const sec = sections[idx];
+      if (!sec) return true;
+      let ok = true;
+      const fields = Array.from(sec.querySelectorAll("input, select, textarea"));
+      fields.forEach((f) => {
+        // no validar checkbox no-required
+        const must = f.hasAttribute("required") || f.getAttribute("pattern") || f.type === "email";
+        if (!must) return;
+        // ignora inputs ocultos
+        if (f.type === "hidden" || f.disabled) return;
+        const valid = f.checkValidity();
+        if (!valid) {
+          ok = false;
+          setInlineError(f, friendlyMessage(f));
+        } else {
+          setInlineError(f, "");
+        }
+      });
+      return ok;
+    }
+
+    function validateUpTo(maxIdx) {
+      for (let i = 0; i <= maxIdx; i++) {
+        if (!validateSection(i)) {
+          showStep(i);
+          // foco primer inválido
+          const firstBad = sections[i].querySelector('[aria-invalid="true"]');
+          if (firstBad && firstBad.focus) firstBad.focus();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function showStep(idx) {
+      current = Math.max(0, Math.min(idx, totalSteps - 1));
+
+      sections.forEach((sec, i) => {
+        sec.style.display = i === current ? "block" : "none";
+      });
+
+      const stepNum = current + 1;
+      const title = sections[current]?.getAttribute("data-step-title") || `Paso ${stepNum}`;
+      const hint = sections[current]?.getAttribute("data-step-hint") || "";
+
+      if (stepTitle) stepTitle.textContent = `Paso ${stepNum} de ${totalSteps}`;
+      if (stepHint) stepHint.textContent = hint;
+      if (ctaTitle) ctaTitle.textContent = `Paso ${stepNum} de ${totalSteps}`;
+      if (ctaDesc) ctaDesc.textContent = hint || "";
+
+      if (stepBar) stepBar.style.width = `${Math.round((stepNum / totalSteps) * 100)}%`;
+
+      if (stepsPills) {
+        Array.from(stepsPills.children).forEach((el, i) => {
+          el.classList.toggle("active", i === current);
+          // done si sección previa ya valida
+          if (i < current) el.classList.toggle("done", validateSection(i));
+          if (i >= current) el.classList.remove("done");
+        });
+      }
+
+      if (prevBtn) prevBtn.style.visibility = current === 0 ? "hidden" : "visible";
+      if (nextBtn) nextBtn.textContent = current === totalSteps - 1 ? "Revisar →" : "Siguiente →";
+
+      scrollToTop();
+    }
+
+    // listeners para limpiar errors cuando el usuario corrige
+    (function bindLiveValidation(){
+      const allFields = Array.from(form.querySelectorAll("input, select, textarea"));
+      allFields.forEach((f) => {
+        const ev = f.type === "checkbox" ? "change" : "input";
+        f.addEventListener(ev, () => {
+          if (f.checkValidity()) setInlineError(f, "");
+        });
+      });
+    })();
+
+    function ensureErrorEl() {
+      let el = document.getElementById("formError");
+      if (el) return el;
+
+      const ctaInner = document.querySelector(".ctaInner");
+      el = document.createElement("div");
+      el.id = "formError";
+      el.className = "formError";
+      el.style.display = "none";
+      el.textContent = "";
+      if (ctaInner) ctaInner.appendChild(el);
+      return el;
+    }
+
+    function setLoading(isLoading) {
+      if (!nextBtn) return;
+      nextBtn.disabled = isLoading;
+      prevBtn.disabled = isLoading;
+      nextBtn.textContent = isLoading ? "Procesando..." : (current === totalSteps - 1 ? "Revisar →" : "Siguiente →");
+      nextBtn.style.opacity = isLoading ? "0.9" : "1";
+      nextBtn.style.pointerEvents = isLoading ? "none" : "auto";
+    }
+
+    function showError(msg) {
+      const el = ensureErrorEl();
+      if (!el) return alert(msg || "Ocurrió un error.");
+      el.textContent = msg || "Ocurrió un error.";
+      el.style.display = "block";
+    }
+
+    function clearError() {
+      const el = document.getElementById("formError");
+      if (!el) return;
+      el.textContent = "";
+      el.style.display = "none";
+    }
+
+    function formToJson(fd) {
+      const obj = {};
+      for (const [k, v] of fd.entries()) {
+        if (obj[k] !== undefined) {
+          if (!Array.isArray(obj[k])) obj[k] = [obj[k]];
+          obj[k].push(v);
+        } else {
+          obj[k] = v;
+        }
+      }
+      return obj;
+    }
+
+    async function handleSubmit() {
+      clearError();
+
+      // valida todo antes de enviar
+      if (!validateUpTo(totalSteps - 1)) return;
+
+      setLoading(true);
+
+      try {
+        const fd = new FormData(form);
+        const payload = formToJson(fd);
+
+        const resp = await fetch("/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await resp.json().catch(() => null);
+
+        if (!resp.ok || !data || data.ok !== true) {
+          const msg = data?.message || "No se pudo enviar. Verifica los datos e intenta de nuevo.";
+          showError(msg);
+          setLoading(false);
+          return;
+        }
+
+        window.location.href = data.redirectUrl;
+      } catch (err) {
+        showError("Error de conexión. Intenta nuevamente.");
+        setLoading(false);
+      }
+    }
+
+    function openSummary() {
+      if (!summaryOverlay || !summaryGrid) return;
+
+      // arma resumen (campos clave)
+      const get = (name) => {
+        const el = form.elements[name];
+        if (!el) return "";
+        if (el instanceof RadioNodeList) {
+          // checkbox groups
+          const vals = Array.from(el).filter(x=>x.checked).map(x=>x.value);
+          return vals.join(", ");
+        }
+        if (el.type === "checkbox") return el.checked ? "Sí" : "No";
+        return (el.value || "").trim();
+      };
+
+      const items = [
+        ["Nombre comercial", get("negocio_nombre_comercial")],
+        ["Razón social", get("negocio_razon_social")],
+        ["RNC", get("negocio_rnc")],
+        ["Actividad", get("negocio_actividad") || get("negocio_actividad_otro")],
+        ["Empleados", get("negocio_empleados")],
+        ["Responsable", get("responsable_nombre")],
+        ["Cargo", get("responsable_cargo")],
+        ["WhatsApp", get("responsable_whatsapp")],
+        ["Email", get("responsable_email")],
+        ["Frecuencia", get("consumo_frecuencia")],
+        ["Productos", get("consumo_productos") || get("consumo_productos_otro")],
+        ["Prioridades", get("prioridades")],
+        ["Facilidad 30 días", get("facilidad_30_dias")],
+        ["Estados de cuenta", get("estados_cuenta_por")],
+        ["Autorización", get("acepta_terminos") === "Sí" ? "Aceptada" : "Pendiente"],
+      ];
+
+      summaryGrid.innerHTML = "";
+      items.forEach(([k,v]) => {
+        const el = document.createElement("div");
+        el.className = "sumItem";
+        el.innerHTML = `<b>${k}</b><span>${(v || "—")}</span>`;
+        summaryGrid.appendChild(el);
+      });
+
+      summaryOverlay.classList.add("show");
+    }
+
+    function closeSummary() {
+      if (!summaryOverlay) return;
+      summaryOverlay.classList.remove("show");
+    }
+
+    // Navegación
+    prevBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (current > 0) showStep(current - 1);
+    });
+
+    nextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      // último paso -> resumen
+      if (current === totalSteps - 1) {
+        if (!validateUpTo(totalSteps - 1)) return;
+        openSummary();
+        return;
+      }
+      // valida paso actual
+      if (!validateSection(current)) {
+        const firstBad = sections[current].querySelector('[aria-invalid="true"]');
+        if (firstBad && firstBad.focus) firstBad.focus();
+        return;
+      }
+      showStep(current + 1);
+    });
+
+    summaryBack?.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeSummary();
+    });
+    summaryOverlay?.addEventListener("click", (e) => {
+      if (e.target === summaryOverlay) closeSummary();
+    });
+    summaryConfirm?.addEventListener("click", async (e) => {
+      e.preventDefault();
+      await handleSubmit();
+    });
+
+    // si alguien intenta submit (enter), redirige al flujo
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (current !== totalSteps - 1) {
+        nextBtn.click();
+        return;
+      }
+      openSummary();
+    });
+
+    // Init: mostrar solo paso 1
+    showStep(0);
+  
+
+    // --- RNC/Cédula: Autocompletado + Validación (RD)
+    (function () {
+      const rncInput = document.getElementById("negocio_rnc");
+      const razonInput = document.getElementById("negocio_razon_social");
+      const nombreComercialInput = document.getElementById("negocio_nombre_comercial");
+      const indicator = document.getElementById("rncIndicator");
+      const warn = document.getElementById("rncWarn");
+
+      if (!rncInput || !indicator || !warn) return;
+
+      let inFlight = false;
+      let lastValue = "";
+      let debounceId = null;
+
+      const onlyDigits = (s) => String(s || "").replace(/\D/g, "");
+      const flash = (el) => {
+        if (!el) return;
+        el.classList.remove("flashOk");
+        // reflow
+        void el.offsetWidth;
+        el.classList.add("flashOk");
+      };
+
+      function setLoading(on) {
+        inFlight = on;
+        if (on) indicator.classList.add("loading");
+        else indicator.classList.remove("loading");
+      }
+
+      function setWarn(text) {
+        if (!text) {
+          warn.classList.remove("show");
+          return;
+        }
+        warn.textContent = text;
+        warn.classList.add("show");
+      }
+
+      async function validateNow() {
+        const raw = rncInput.value || "";
+        const num = onlyDigits(raw);
+        if (raw !== num) rncInput.value = num;
+
+        // solo dispara si 9 u 11 dígitos
+        if (!(num.length === 9 || num.length === 11)) {
+          setWarn("");
+          return;
+        }
+        if (inFlight) return;
+        if (num === lastValue) return;
+
+        lastValue = num;
+        setLoading(true);
+        setWarn("");
+
+        try {
+          const resp = await fetch(`/api/validate-rnc/${encodeURIComponent(num)}`, {
+            method: "GET",
+            headers: { "Accept": "application/json" },
+          });
+          const json = await resp.json().catch(() => null);
+
+          // si falla, permite manual
+          if (!resp.ok || !json || json.ok !== true) {
+            setLoading(false);
+            return;
+          }
+
+          // ok=true pero found=false => permitir manual, sin bloquear
+          if (json.found === false) {
+            setLoading(false);
+            return;
+          }
+
+          const data = json.data || {};
+
+          // Autorrelleno
+          if (razonInput && data.razon_social) {
+            razonInput.value = data.razon_social;
+            flash(razonInput);
+          }
+          if (nombreComercialInput && data.nombre_comercial) {
+            nombreComercialInput.value = data.nombre_comercial;
+            flash(nombreComercialInput);
+          }
+
+          // Advertencia si NO ACTIVO
+          const estado = String(data.estado || "").toUpperCase().trim();
+          if (estado && estado !== "ACTIVO") {
+            setWarn(`Atención: Este RNC figura como ${estado} en la DGII.`);
+          } else {
+            setWarn("");
+          }
+
+          setLoading(false);
+        } catch {
+          setLoading(false);
+        }
+      }
+
+      function scheduleValidate() {
+        clearTimeout(debounceId);
+        debounceId = setTimeout(validateNow, 350);
+      }
+
+      rncInput.addEventListener("input", scheduleValidate);
+      rncInput.addEventListener("blur", validateNow);
+      rncInput.addEventListener("change", validateNow);
+    })();
+</script>
+<script>
+    // reCAPTCHA v3: token for action "submit"
+    (function(){
+      const siteKey = "{{RECAPTCHA_SITE_KEY}}";
+      if (!siteKey) return; // not configured
+      const s = document.createElement("script");
+      s.src = "https://www.google.com/recaptcha/api.js?render=" + encodeURIComponent(siteKey);
+      s.async = true; s.defer = true;
+      document.head.appendChild(s);
+
+      function refreshToken(){
+        if (!window.grecaptcha) return;
+        window.grecaptcha.ready(function() {
+          window.grecaptcha.execute(siteKey, { action: "submit" }).then(function(token) {
+            const el = document.getElementById("recaptcha_token");
+            if (el) el.value = token;
+          });
+        });
+      }
+
+      // refresh at load and every 90s
+      const iv = setInterval(refreshToken, 90000);
+      window.addEventListener("load", refreshToken);
+      document.getElementById("submitBtn")?.addEventListener("click", refreshToken);
+    })();
+  </script>
+</body>
+</html>

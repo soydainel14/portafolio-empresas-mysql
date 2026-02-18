@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard | Portafolio Empresas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F6F8FB; --text:#0B1220; --stroke:rgba(11,18,32,.10);
+      --brand:#188888; --brand2:#2E9191;
+      --shadow:0 22px 60px rgba(11,18,32,.10);
+      --radius:18px;
+      --ok:#16A34A; --warn:#D97706; --bad:#EF4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1200px;margin:0 auto;padding:22px 16px 60px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .logo{height:44px;width:auto}
+    h1{margin:0;font-size:16px;font-weight:950}
+    .pill{padding:10px 12px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.7);font-size:12px;font-weight:900;color:rgba(11,18,32,.75)}
+    .grid{display:grid;grid-template-columns: 1fr 1fr 1fr;gap:12px}
+    .card{border:1px solid var(--stroke);background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
+    .card b{display:block;font-size:12px;font-weight:950}
+    .card span{display:block;margin-top:6px;color:rgba(11,18,32,.7);font-weight:800;font-size:12px}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+    input,select{padding:12px;border-radius:14px;border:1px solid var(--stroke);outline:none;background:#fff}
+    input:focus,select:focus{border-color:rgba(24,136,136,.6);box-shadow:0 0 0 4px rgba(24,136,136,.16)}
+    .btn{
+      border:0;border-radius:14px;padding:12px 14px;
+      background: var(--brand);
+      color:#fff;font-weight:950;cursor:pointer;
+      box-shadow: 0 10px 22px rgba(24,136,136,.18);
+    }
+    .btn2{background:transparent;color:rgba(11,18,32,.85);border:1px solid rgba(11,18,32,.16);box-shadow:none}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;overflow:hidden;border-radius:18px;border:1px solid var(--stroke);background:#fff}
+    th,td{padding:10px 10px;border-bottom:1px solid var(--stroke);font-size:12px;vertical-align:top}
+    th{background:rgba(24,136,136,.06);font-weight:950;text-align:left}
+    tr:last-child td{border-bottom:0}
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);font-weight:950}
+    .A{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.10)}
+    .B{border-color:rgba(217,119,6,.35);background:rgba(217,119,6,.10)}
+    .C{border-color:rgba(239,68,68,.30);background:rgba(239,68,68,.08)}
+    .muted{color:rgba(11,18,32,.7);font-weight:800}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <img class="logo" src="/assets/logo-portafolio.png" alt="Portafolio"/>
+        <div style="min-width:0">
+          <h1>Dashboard · Leads</h1>
+          <div class="muted">Filtro, scoring y auditoría</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a class="btn btn2" href="/admin/kanban">Kanban</a>
+        <a class="btn btn2" href="/admin/templates">Plantillas</a>
+        <a class="btn btn2" href="/admin/scoring">Scoring</a>
+        <div class="pill" id="totalPill">Total: —</div>
+        <form method="POST" action="/admin/logout">
+          <button class="btn btn2" type="submit">Salir</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><b>Tier A</b><span id="tierA">—</span></div>
+      <div class="card"><b>Tier B</b><span id="tierB">—</span></div>
+      <div class="card"><b>Tier C</b><span id="tierC">—</span></div>
+    </div>
+
+    <div class="controls">
+      <input id="q" placeholder="Buscar (negocio, RNC, responsable, WhatsApp)"/>
+      <select id="tier">
+        <option value="">Todos los tiers</option>
+        <option value="A">A (alto)</option>
+        <option value="B">B (medio)</option>
+        <option value="C">C (bajo)</option>
+      </select>
+      <select id="status">
+        <option value="">Todos los status</option>
+        <option value="NUEVO">NUEVO</option>
+        <option value="CONTACTADO">CONTACTADO</option>
+        <option value="APROBADO">APROBADO</option>
+        <option value="RECHAZADO">RECHAZADO</option>
+      </select>
+      <button class="btn" id="btnLoad">Actualizar</button>
+      <button class="btn btn2" id="btnCsv">Exportar CSV</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Status</th>
+          <th>Negocio</th>
+          <th>RNC</th>
+          <th>Owner</th>
+          <th>Responsable</th>
+          <th>Score</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const $ = (id)=>document.getElementById(id);
+
+    function fmtDate(s){
+      try{ return new Date(s).toLocaleString(); }catch{ return s; }
+    }
+    function esc(s){
+      return String(s||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    async function loadStats(){
+      const r = await fetch("/api/admin/stats");
+      const j = await r.json();
+      if(!j.ok) return;
+      $("totalPill").textContent = "Total: " + j.total;
+
+      let a=0,b=0,c=0;
+      (j.byTier||[]).forEach(x=>{
+        if(x.score_tier==="A") a = x.n;
+        if(x.score_tier==="B") b = x.n;
+        if(x.score_tier==="C") c = x.n;
+      });
+      $("tierA").textContent = a;
+      $("tierB").textContent = b;
+      $("tierC").textContent = c;
+    }
+
+    function buildParams(){
+      const q = $("q").value.trim();
+      const tier = $("tier").value.trim();
+      const status = $("status").value.trim();
+      const params = new URLSearchParams();
+      if(q) params.set("q", q);
+      if(tier) params.set("tier", tier);
+      if(status) params.set("status", status);
+      params.set("limit","80");
+      return params;
+    }
+
+    async function loadLeads(){
+      const params = buildParams();
+      const r = await fetch("/api/admin/leads?" + params.toString());
+      const j = await r.json();
+      if(!j.ok) return;
+
+      const tb = $("rows");
+      tb.innerHTML = "";
+
+      (j.rows||[]).forEach(row=>{
+        const tierClass = row.score_tier || "C";
+        const tag = `<span class="tag ${tierClass}">${esc(tierClass)} · ${esc(row.score ?? "—")}</span>`;
+        const rnc = row.negocio_rnc ? `${esc(row.negocio_rnc)}<div class="muted">${esc(row.rnc_estado||"")}</div>` : "—";
+
+        const statusTag = `<span class="tag">${esc(row.status||"NUEVO")}</span>`;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${esc(fmtDate(row.created_at))}</td>
+          <td>${statusTag}</td>
+          <td>
+            <b>${esc(row.negocio_nombre_comercial||"")}</b>
+            <div class="muted">${esc(row.negocio_razon_social||"")}</div>
+            <div class="muted">${esc(row.negocio_actividad||"")} · ${esc(row.negocio_empleados||"")}</div>
+          </td>
+          <td>${rnc}</td>
+          <td>
+            <b>${esc(row.owner_email||"")}</b>
+            <div class="muted">${esc(row.owner_admin_id?("ID " + row.owner_admin_id):"")}</div>
+          </td>
+          <td>
+            <b>${esc(row.responsable_nombre||"")}</b>
+            <div class="muted">${esc(row.responsable_whatsapp||"")}</div>
+            <div class="muted">${esc(row.responsable_email||"")}</div>
+          </td>
+          <td>${tag}</td>
+          <td>
+            <a class="btn btn2" href="/admin/leads/${row.id}" style="text-decoration:none;display:inline-block;margin-right:6px">Ver</a>
+            <button class="btn btn2" data-id="${row.id}">Re-score</button>
+          </td>
+        `;
+        tb.appendChild(tr);
+      });
+
+      tb.querySelectorAll("button[data-id]").forEach(btn=>{
+        btn.addEventListener("click", async ()=>{
+          btn.disabled = true;
+          const id = btn.getAttribute("data-id");
+          await fetch("/api/admin/rescore/" + encodeURIComponent(id), { method:"POST" });
+          btn.disabled = false;
+          await loadStats();
+          await loadLeads();
+        });
+      });
+    }
+
+    $("btnLoad").addEventListener("click", async (e)=>{
+      e.preventDefault();
+      await loadStats();
+      await loadLeads();
+    });
+
+    $("btnCsv").addEventListener("click", (e)=>{
+      e.preventDefault();
+      const params = buildParams();
+      // descarga directa
+      window.location.href = "/api/admin/leads.csv?" + params.toString();
+    });
+
+    (async ()=>{
+      await loadStats();
+      await loadLeads();
+    })();
+  </script>
+</body>
+</html>
