@@ -1,16 +1,23 @@
 import express from "express";
 import helmet from "helmet";
+<<<<<<< HEAD
 import rateLimit from "express-rate-limit";
+=======
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+<<<<<<< HEAD
 import crypto from "crypto";
 import mysql from "mysql2/promise";
 import cookieParser from "cookie-parser";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+=======
+import mysql from "mysql2/promise";
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 
 dotenv.config();
 
@@ -18,6 +25,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+<<<<<<< HEAD
 
 // -------------------- Request Id (auditoría)
 app.use((req, res, next) => {
@@ -59,11 +67,15 @@ app.use(cookieParser());
 
 // JSON (AJAX) + urlencoded (fallback)
 app.use(express.json({ limit: "1mb" }));
+=======
+app.use(helmet());
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 
 // Static assets (logo, etc.)
 app.use("/assets", express.static(path.join(__dirname, "public", "assets")));
 
+<<<<<<< HEAD
 // Rate limit: 10 requests / 15 minutes per IP for /submit
 const submitLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -433,6 +445,15 @@ async function verifyRecaptcha(token, ip) {
 
   // Si no está configurado, saltar (modo local/dev)
   if (!secret) return { ok: true, skipped: true };
+=======
+// -------------------- reCAPTCHA (optional)
+async async function verifyRecaptcha(token, ip) {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+
+  // If not configured, skip
+  if (!secret) return { ok: true, skipped: true };
+
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
   if (!token) return { ok: false, reason: "missing_token" };
 
   const params = new URLSearchParams();
@@ -448,12 +469,19 @@ async function verifyRecaptcha(token, ip) {
 
   const data = await resp.json();
 
+<<<<<<< HEAD
+=======
+  // v3 adds score/action; v2 doesn't.
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
   const minScore = Number(process.env.RECAPTCHA_MIN_SCORE || 0.5);
   const expectedAction = process.env.RECAPTCHA_ACTION || "submit";
 
   if (!data.success) return { ok: false, reason: "not_success", data };
 
+<<<<<<< HEAD
   // v3: score/action
+=======
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
   if (typeof data.score === "number") {
     if (data.score < minScore) return { ok: false, reason: "low_score", data };
     if (data.action && data.action !== expectedAction) return { ok: false, reason: "bad_action", data };
@@ -462,6 +490,7 @@ async function verifyRecaptcha(token, ip) {
   return { ok: true, data };
 }
 
+<<<<<<< HEAD
 // -------------------- DB (MySQL) usando pool (producción)
 let pool = null;
 
@@ -516,11 +545,33 @@ function getMysqlConfig() {
       password: String(process.env.MYSQLPASSWORD || ""),
       database: t(process.env.MYSQLDATABASE),
     };
+=======
+// -------------------- DB (MySQL)
+function getMysqlConfig() {
+
+  // 1️⃣ Prefer Railway MySQL vars (RECOMENDADO)
+  const host = process.env.MYSQLHOST;
+  const port = Number(process.env.MYSQLPORT || 3306);
+  const user = process.env.MYSQLUSER;
+  const password = process.env.MYSQLPASSWORD;
+  const database = process.env.MYSQLDATABASE;
+
+  if (host && user && database) {
+    console.log("✅ Using Railway MySQL variables");
+    return { host, port, user, password, database };
+  }
+
+  // 2️⃣ Fallback DATABASE_URL (only if valid)
+  if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith("mysql")) {
+    console.log("⚠️ Using DATABASE_URL");
+    return { uri: process.env.DATABASE_URL };
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
   }
 
   return null;
 }
 
+<<<<<<< HEAD
 async function initDb() {
   const cfg = getMysqlConfig();
   if (!cfg) {
@@ -541,6 +592,31 @@ async function initDb() {
   });
 
   // Tabla (idempotente)
+=======
+
+let pool = null;
+
+async function initDb() {
+  const cfg = getMysqlConfig();
+  if (!cfg) {
+    throw new Error("Faltan variables de MySQL. Define DATABASE_URL o MYSQLHOST/MYSQLUSER/MYSQLDATABASE.");
+  }
+
+  pool = cfg.uri
+    ? mysql.createPool(cfg.uri)
+    : mysql.createPool({
+        host: cfg.host,
+        port: cfg.port,
+        user: cfg.user,
+        password: cfg.password,
+        database: cfg.database,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+      });
+
+  // Create table
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
   await pool.query(`
     CREATE TABLE IF NOT EXISTS leads (
       id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -585,6 +661,7 @@ async function initDb() {
     );
   `);
 
+<<<<<<< HEAD
   // --- Evolución de esquema (estado RNC + scoring)
   await ensureColumn("leads", "rnc_estado", "VARCHAR(32) NULL");
   await ensureColumn("leads", "rnc_validated_at", "TIMESTAMP NULL");
@@ -736,6 +813,38 @@ async function initDb() {
 }
 
 // -------------------- Email transporter (SMTP) (opcional)
+=======
+  // Schema evolution helpers (safe on older DBs)
+  async function hasColumn(columnName) {
+    const [rows] = await pool.execute(
+      `SELECT COUNT(*) AS c
+       FROM information_schema.columns
+       WHERE table_schema = DATABASE()
+         AND table_name = 'leads'
+         AND column_name = ?`,
+      [columnName]
+    );
+    return Number(rows?.[0]?.c || 0) > 0;
+  }
+
+  async function ensureColumn(columnName, ddl) {
+    const exists = await hasColumn(columnName);
+    if (!exists) {
+      await pool.query(`ALTER TABLE leads ADD COLUMN ${ddl}`);
+    }
+  }
+
+  await ensureColumn("consumo_nota", "consumo_nota TEXT NULL");
+  await ensureColumn("acepta_privacidad", "acepta_privacidad TINYINT(1) NOT NULL DEFAULT 1");
+  await ensureColumn("privacidad_version", "privacidad_version VARCHAR(32) NULL");
+  await ensureColumn("terminos_version", "terminos_version VARCHAR(32) NULL");
+  await ensureColumn("consentimiento_at", "consentimiento_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP");
+
+  console.log("✅ MySQL conectado y tabla leads verificada");
+}
+
+// -------------------- Email transporter (SMTP) (optional)
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 function makeTransporter() {
   const host = process.env.SMTP_HOST;
   const port = Number(process.env.SMTP_PORT || 587);
@@ -754,6 +863,39 @@ function makeTransporter() {
   });
 }
 
+<<<<<<< HEAD
+=======
+// -------------------- Helpers
+function pickMax2(arr) {
+  const a = Array.isArray(arr) ? arr : arr ? [arr] : [];
+  return a.slice(0, 2);
+}
+
+function toCSV(v) {
+  if (!v) return "";
+  return Array.isArray(v) ? v.join(", ") : String(v);
+}
+
+function sanitizePhone(phone) {
+  return String(phone || "").replace(/\D/g, "");
+}
+
+function buildWhatsAppLink(phoneTo, message) {
+  const p = sanitizePhone(phoneTo);
+  const txt = encodeURIComponent(message);
+  return `https://wa.me/${p}?text=${txt}`;
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 // -------------------- Routes
 app.get("/", async (req, res) => {
   try {
@@ -761,8 +903,11 @@ app.get("/", async (req, res) => {
     const fp = path.join(__dirname, "views", "form.html");
     let html = await fs.promises.readFile(fp, "utf-8");
     html = html.replaceAll("{{RECAPTCHA_SITE_KEY}}", siteKey);
+<<<<<<< HEAD
     html = html.replaceAll("{{FB_PIXEL_ID}}", process.env.FB_PIXEL_ID || "");
     html = html.replaceAll("{{GA_MEASUREMENT_ID}}", process.env.GA_MEASUREMENT_ID || "");
+=======
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.send(html);
   } catch (err) {
@@ -771,6 +916,7 @@ app.get("/", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 
 // -------------------- Healthchecks (Railway / Load Balancer)
 app.get("/health", async (req, res) => {
@@ -793,6 +939,8 @@ app.get("/ready", async (req, res) => {
   }
 });
 
+=======
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 app.get("/thanks", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "thanks.html"));
 });
@@ -809,6 +957,7 @@ app.get("/terminos", async (req, res) => {
   res.send(html);
 });
 
+<<<<<<< HEAD
 // -------------------- Admin UI
 app.get("/admin/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "admin-login.html"));
@@ -1409,11 +1558,15 @@ app.get("/api/validate-rnc/:rnc", validateRncLimiter, async (req, res) => {
 });
 
 app.post("/submit", submitLimiter, async (req, res) => {
+=======
+app.post("/submit", async (req, res) => {
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
   try {
     const b = req.body || {};
     const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket.remoteAddress || "";
     const user_agent = req.headers["user-agent"] || "";
 
+<<<<<<< HEAD
     // reCAPTCHA (opcional)
     const recaptchaToken = t(b.recaptcha_token || b["g-recaptcha-response"]);
     const captcha = await verifyRecaptcha(recaptchaToken, ip);
@@ -1474,23 +1627,83 @@ app.post("/submit", submitLimiter, async (req, res) => {
       estados_cuenta_por: t(b.estados_cuenta_por),
 
       acepta_terminos,
+=======
+    // reCAPTCHA (optional)
+    const recaptchaToken = String(b.recaptcha_token || b["g-recaptcha-response"] || "");
+    const captcha = await verifyRecaptcha(recaptchaToken, ip);
+    if (!captcha.ok) {
+      return res.status(400).send("Validación reCAPTCHA fallida. Intenta de nuevo.");
+    }
+
+    const required = (name) => b[name] && String(b[name]).trim().length > 0;
+    if (!required("negocio_nombre_comercial")) return res.status(400).send("Falta: Nombre comercial");
+    if (!required("negocio_actividad")) return res.status(400).send("Falta: Actividad principal");
+    if (!required("responsable_nombre")) return res.status(400).send("Falta: Nombre responsable");
+    if (!required("responsable_whatsapp")) return res.status(400).send("Falta: WhatsApp responsable");
+
+    const acepta = b.acepta_terminos === "on" ? 1 : 0;
+    if (!acepta) return res.status(400).send("Debe aceptar términos");
+
+    const consumo_productos = toCSV(b.consumo_productos);
+    const prioridades = toCSV(pickMax2(b.prioridades));
+    const consumo_nota = (b.consumo_nota || "").toString().trim();
+
+    const data = {
+      negocio_nombre_comercial: b.negocio_nombre_comercial?.trim(),
+      negocio_razon_social: b.negocio_razon_social?.trim() || "",
+      negocio_rnc: b.negocio_rnc?.trim() || "",
+      negocio_actividad: b.negocio_actividad,
+      negocio_actividad_otro: b.negocio_actividad_otro?.trim() || "",
+      negocio_local_plaza: b.negocio_local_plaza?.trim() || "",
+      negocio_empleados: b.negocio_empleados || "",
+
+      responsable_nombre: b.responsable_nombre?.trim(),
+      responsable_cargo: b.responsable_cargo?.trim() || "",
+      responsable_whatsapp: b.responsable_whatsapp?.trim(),
+      responsable_email: b.responsable_email?.trim() || "",
+
+      autoriza_compras: b.autoriza_compras || "",
+      autoriza_compras_otro: b.autoriza_compras_otro?.trim() || "",
+
+      consumo_frecuencia: b.consumo_frecuencia || "",
+      consumo_nota,
+      consumo_productos,
+      consumo_productos_otro: b.consumo_productos_otro?.trim() || "",
+      prioridades,
+
+      facilidad_30_dias: b.facilidad_30_dias || "",
+      estados_cuenta_por: b.estados_cuenta_por || "",
+
+      acepta_terminos: acepta,
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 
       acepta_privacidad: 1,
       privacidad_version: "2026-01-01",
       terminos_version: "2026-01-01",
       consentimiento_at: new Date(),
 
+<<<<<<< HEAD
       autorizacion_nombre: t(b.autorizacion_nombre),
       autorizacion_fecha: t(b.autorizacion_fecha),
 
       user_agent,
       ip,
       rnc_estado,
+=======
+      autorizacion_nombre: b.autorizacion_nombre?.trim() || "",
+      autorizacion_fecha: b.autorizacion_fecha?.trim() || "",
+
+      user_agent,
+      ip,
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
     };
 
     if (!pool) throw new Error("DB no inicializada");
 
+<<<<<<< HEAD
     // 1) CRÍTICO: guardar en BD
+=======
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
     const [result] = await pool.execute(
       `INSERT INTO leads (
         negocio_nombre_comercial, negocio_razon_social, negocio_rnc,
@@ -1503,7 +1716,10 @@ app.post("/submit", submitLimiter, async (req, res) => {
         acepta_privacidad, privacidad_version, terminos_version, consentimiento_at,
         autorizacion_nombre, autorizacion_fecha,
         user_agent, ip
+<<<<<<< HEAD
         , rnc_estado, rnc_validated_at
+=======
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
       ) VALUES (
         ?, ?, ?,
         ?, ?, ?, ?,
@@ -1515,6 +1731,7 @@ app.post("/submit", submitLimiter, async (req, res) => {
         ?, ?, ?, ?,
         ?, ?,
         ?, ?
+<<<<<<< HEAD
         , ?, NOW()
       )`,
       [
@@ -1548,11 +1765,26 @@ app.post("/submit", submitLimiter, async (req, res) => {
         data.user_agent,
         data.ip,
         data.rnc_estado,
+=======
+      )`,
+      [
+        data.negocio_nombre_comercial, data.negocio_razon_social, data.negocio_rnc,
+        data.negocio_actividad, data.negocio_actividad_otro, data.negocio_local_plaza, data.negocio_empleados,
+        data.responsable_nombre, data.responsable_cargo, data.responsable_whatsapp, data.responsable_email,
+        data.autoriza_compras, data.autoriza_compras_otro,
+        data.consumo_frecuencia, data.consumo_nota, data.consumo_productos, data.consumo_productos_otro, data.prioridades,
+        data.facilidad_30_dias, data.estados_cuenta_por,
+        data.acepta_terminos,
+        data.acepta_privacidad, data.privacidad_version, data.terminos_version, data.consentimiento_at,
+        data.autorizacion_nombre, data.autorizacion_fecha,
+        data.user_agent, data.ip,
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
       ]
     );
 
     const leadId = result.insertId;
 
+<<<<<<< HEAD
     // scoring persistente (A/B/C)
     await scoreAndPersistLead(leadId);
 
@@ -1562,6 +1794,13 @@ app.post("/submit", submitLimiter, async (req, res) => {
       const toEmail = t(process.env.LEADS_TO_EMAIL);
 
       if (transporter && toEmail) {
+=======
+    // Email (optional)
+    const transporter = makeTransporter();
+    if (transporter) {
+      const toEmail = process.env.LEADS_TO_EMAIL || "";
+      if (toEmail) {
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
         const subject = `Nuevo registro - Código Empresarial Portafolio (#${leadId})`;
 
         const html = `
@@ -1619,6 +1858,7 @@ app.post("/submit", submitLimiter, async (req, res) => {
           html,
         });
       }
+<<<<<<< HEAD
     } catch (mailErr) {
       console.error("⚠️ Email falló (no bloqueante):", mailErr?.message || mailErr);
       // NO interrumpe: el lead ya está guardado
@@ -1626,6 +1866,12 @@ app.post("/submit", submitLimiter, async (req, res) => {
 
     // Redirect URL (frontend hará window.location)
     const waTo = t(process.env.WHATSAPP_TO);
+=======
+    }
+
+    // Redirect to thanks + WhatsApp
+    const waTo = process.env.WHATSAPP_TO || "";
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
     const waMessage =
       `Hola, acabo de enviar una solicitud de Código Empresarial / crédito.\n\n` +
       `ID: #${leadId}\n` +
@@ -1637,6 +1883,7 @@ app.post("/submit", submitLimiter, async (req, res) => {
       `\n¿Me confirman recepción? Gracias.`;
 
     const waLink = buildWhatsAppLink(waTo, waMessage);
+<<<<<<< HEAD
     const redirectUrl = `/thanks?wa=${encodeURIComponent(waLink)}`;
 
     return res.json({ ok: true, redirectUrl });
@@ -1654,6 +1901,15 @@ app.use((err, req, res, next) => {
   res.status(500).json({ ok: false, message: "Error interno." });
 });
 
+=======
+    res.redirect(`/thanks?wa=${encodeURIComponent(waLink)}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error interno al procesar el formulario.");
+  }
+});
+
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 // -------------------- Boot
 const port = Number(process.env.PORT || 3000);
 
@@ -1665,4 +1921,8 @@ const port = Number(process.env.PORT || 3000);
     console.error("❌ Error iniciando servidor:", err?.message || err);
     process.exit(1);
   }
+<<<<<<< HEAD
 })();
+=======
+})();
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16

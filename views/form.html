@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 
 <html lang="es">
@@ -677,10 +678,542 @@ input:focus,select:focus,textarea:focus{
       try { window.scrollTo({ top: 0, left: 0, behavior: "smooth" }); }
       catch (e) { window.scrollTo(0, 0); }
 
+=======
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Código Empresarial | Crear Código Empresarial</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #F6F8FB;
+      --bg2:#FFFFFF;
+      --panel:#FFFFFF;
+      --stroke: rgba(11,18,32,.10);
+      --stroke2: rgba(11,18,32,.16);
+      --text:#0B1220;
+      --muted: rgba(11,18,32,.70);
+
+      --brand: #188888;
+      --brand2:#2E9191;
+
+      --ok:#16A34A;
+      --warn:#D97706;
+
+      --shadow: 0 22px 60px rgba(11,18,32,.10);
+      --radius: 18px;
+      --radius2: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 540px at 10% -10%, rgba(24,136,136,.14), transparent 60%),
+        radial-gradient(900px 520px at 90% -10%, rgba(46,145,145,.10), transparent 55%),
+        var(--bg);
+    }
+
+    .container{max-width:980px;margin:0 auto;padding:28px 18px 86px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      box-shadow: 0 10px 26px rgba(24,136,136,.22);
+      flex:0 0 auto;
+    }
+    .logo-img{height:44px;width:auto;display:block}
+    .brand h1{font-size:16px;line-height:1.2;margin:0;font-weight:900;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand small{display:block;color:var(--muted);font-weight:600;margin-top:2px}
+
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.7);
+      color:var(--muted);
+      font-size:12px;font-weight:700;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero{display:grid;grid-template-columns: 1.2fr .8fr;gap:18px;align-items:stretch;margin:14px 0 18px}
+    .heroCard{
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .heroInner{padding:18px 18px 16px}
+    .heroTitle{margin:0 0 6px;font-size:26px;font-weight:950;letter-spacing:-.03em}
+    .heroDesc{margin:0;color:var(--muted);line-height:1.45}
+    .heroMeta{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px}
+    .metaTag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 10px;border-radius:12px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.7);
+      font-size:12px;font-weight:800;color:rgba(11,18,32,.85);
+    }
+    .dot{width:8px;height:8px;border-radius:99px;background:var(--ok);box-shadow:0 0 0 4px rgba(22,163,74,.12)}
+
+    .sideCard{padding:16px;display:flex;flex-direction:column;gap:10px}
+    .benefit{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.75);
+      border-radius:var(--radius2);
+      padding:12px;
+    }
+    .benefit b{display:block;font-size:13px}
+    .benefit span{display:block;color:var(--muted);font-size:12px;margin-top:4px;line-height:1.35}
+
+    form{margin-top:0}
+    .section{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.82);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow: 0 14px 40px rgba(11,18,32,.08);
+      margin:14px 0;
+    }
+    .sectionHeader{
+      display:flex;align-items:flex-start;justify-content:space-between;
+      gap:12px;padding:16px 16px 14px;
+      background:linear-gradient(180deg, rgba(24,136,136,.06), rgba(255,255,255,.70));
+      border-bottom:1px solid var(--stroke);
+    }
+    .sectionHeader h2{margin:0;font-size:14px;font-weight:950;letter-spacing:-.01em}
+    .sectionHeader p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.35}
+    .badge{
+      padding:8px 10px;border-radius:999px;
+      font-size:11px;font-weight:900;
+      border:1px solid rgba(24,136,136,.35);
+      background:rgba(24,136,136,.08);
+      color:rgba(11,18,32,.85);
+      white-space:nowrap;
+    }
+    .sectionBody{padding:16px}
+
+    .grid{display:grid;grid-template-columns: 1fr 1fr;gap:12px}
+    .grid1{display:grid;grid-template-columns:1fr;gap:12px}
+
+    label{display:block;font-size:12px;font-weight:800;margin:0 0 6px;color:rgba(11,18,32,.88)}
+    .req::after{content:" *";color:var(--warn);font-weight:950}
+    input,select,textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.95);
+      color:var(--text);
+      outline:none;
+      transition: border .12s ease, box-shadow .12s ease, transform .05s ease;
+    }
+    input::placeholder,textarea::placeholder{color:rgba(11,18,32,.42)}
+    input:focus,select:focus,textarea:focus{
+      border-color: rgba(24,136,136,.60);
+      box-shadow: 0 0 0 4px rgba(24,136,136,.16);
+    }
+    textarea{min-height:90px;resize:vertical}
+
+    .hint{margin-top:6px;color:var(--muted);font-size:11px;line-height:1.35}
+
+    .checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+    .check{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:10px;border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.70);
+    }
+    .check input{width:auto;margin-top:2px}
+    .check span{font-size:12px;color:rgba(11,18,32,.86);font-weight:700;line-height:1.25}
+
+    .divider{height:1px;background:var(--stroke);margin:14px 0}
+
+    .ctaBar{
+      position:fixed;left:0;right:0;bottom:0;
+      background:rgba(255,255,255,.78);
+      border-top:1px solid var(--stroke);
+      backdrop-filter: blur(14px);
+      padding:12px 14px;
+    }
+    .ctaInner{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .ctaText{min-width:0}
+    .ctaText b{display:block;font-size:12px}
+    .ctaText span{display:block;font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .btn{
+      appearance:none;border:0;cursor:pointer;
+      padding:12px 14px;border-radius:14px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:white;
+      font-weight:950;font-size:13px;
+      box-shadow: 0 12px 26px rgba(24,136,136,.22);
+      display:inline-flex;align-items:center;gap:10px;
+      white-space:nowrap;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btnSecondary{
+      background:transparent;color:rgba(11,18,32,.88);
+      border:1px solid var(--stroke2);
+      box-shadow:none;
+    }
+
+    @media (max-width: 920px){ .hero{grid-template-columns:1fr} }
+    @media (max-width: 760px){
+      .grid{grid-template-columns:1fr}
+      .checks{grid-template-columns:1fr}
+      .heroTitle{font-size:22px}
+      .ctaInner{flex-direction:column;align-items:stretch}
+      .btn,.btnSecondary{justify-content:center;width:100%}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <img class="logo-img" src="/assets/logo-portafolio.png" alt="Código Empresarial" />
+        <div style="min-width:0">
+          <h1>Código Empresarial</h1>
+          <small>Activación de Código Empresarial</small>
+        </div>
+      </div>
+
+      <div class="pill" title="Tiempo estimado">
+        ⏱️ <span>~ 3 minutos</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="heroCard">
+        <div class="heroInner">
+          <h2 class="heroTitle">Crear Código Empresarial</h2>
+          <p class="heroDesc">
+            Este registro nos permite asignarte un ejecutivo, activar entregas programadas y habilitar facilidades de pago dentro de la plaza.
+          </p>
+
+          <div class="heroMeta">
+            <div class="metaTag"><span class="dot" aria-hidden="true"></span> Atención prioritaria</div>
+            <div class="metaTag">📦 Entregas directas</div>
+            <div class="metaTag">🧾 Facturación organizada</div>
+            <div class="metaTag">💳 30 días (si aplica)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="heroCard sideCard">
+        <div class="benefit">
+          <b>🧾 50% en rollos térmicos</b>
+          <span>Exclusivo para negocios de la plaza.</span>
+        </div>
+        <div class="benefit">
+          <b>💳 Paga hasta en 30 días</b>
+          <span>Sujeto a evaluación y aprobación.</span>
+        </div>
+        <div class="benefit">
+          <b>✅ Evita urgencias</b>
+          <span>Recordatorios y reposición antes de quedarte sin material.</span>
+        </div>
+      </div>
+    </div>
+
+    <form method="POST" action="/submit" id="leadForm" novalidate>
+      <input type="hidden" id="recaptcha_token" name="recaptcha_token" />
+      <section class="section">
+        <header class="sectionHeader">
+          <div>
+            <h2>1) Datos del Negocio</h2>
+            <p>Información básica para crear tu perfil empresarial.</p>
+          </div>
+          <div class="badge">Obligatorio</div>
+        </header>
+
+        <div class="sectionBody">
+          <div class="grid1">
+            <div>
+              <label class="req">Nombre comercial del negocio</label>
+              <input name="negocio_nombre_comercial" required placeholder="Ej: Café Plaza Central" />
+              <div class="hint">Como te conocen en la plaza (letrero / nombre público).</div>
+            </div>
+
+            <div class="grid">
+              <div>
+                <label>Razón social</label>
+                <input name="negocio_razon_social" placeholder="Ej: Café Plaza Central, SRL" />
+              </div>
+              <div>
+                <label>RNC</label>
+                <input name="negocio_rnc" placeholder="Ej: 1-2345678-9" />
+              </div>
+            </div>
+
+            <div class="grid">
+              <div>
+                <label class="req">Actividad principal</label>
+                <select name="negocio_actividad" required>
+                  <option value="">Seleccione…</option>
+                  <option>Restaurante / Cafetería</option>
+                  <option>Tienda Retail</option>
+                  <option>Oficina administrativa</option>
+                  <option>Consultorio / Clínica</option>
+                  <option>Servicio</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div>
+                <label>Si es “Otro”, especifique</label>
+                <input name="negocio_actividad_otro" placeholder="Ej: Heladería" />
+              </div>
+            </div>
+
+            <div class="grid">
+              <div>
+                <label>Local / Número en la plaza</label>
+                <input name="negocio_local_plaza" placeholder="Ej: Local B-12" />
+              </div>
+              <div>
+                <label>Cantidad aproximada de empleados</label>
+                <select name="negocio_empleados">
+                  <option value="">Seleccione…</option>
+                  <option>1–3</option>
+                  <option>4–8</option>
+                  <option>9–20</option>
+                  <option>20+</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <header class="sectionHeader">
+          <div>
+            <h2>2) Persona Responsable</h2>
+            <p>Contacto principal para coordinación y activación.</p>
+          </div>
+          <div class="badge">Obligatorio</div>
+        </header>
+
+        <div class="sectionBody">
+          <div class="grid">
+            <div>
+              <label class="req">Nombre y apellido</label>
+              <input name="responsable_nombre" required placeholder="Ej: Juan Pérez" />
+            </div>
+            <div>
+              <label>Cargo</label>
+              <input name="responsable_cargo" placeholder="Ej: Administrador" />
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <label class="req">Teléfono (WhatsApp)</label>
+              <input name="responsable_whatsapp" required inputmode="numeric" placeholder="Ej: 8095551234" />
+              <div class="hint">Solo números (formato RD recomendado).</div>
+            </div>
+            <div>
+              <label>Correo electrónico</label>
+              <input name="responsable_email" type="email" placeholder="Ej: admin@negocio.com" />
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <label>¿Quién autoriza compras normalmente?</label>
+              <select name="autoriza_compras">
+                <option value="">Seleccione…</option>
+                <option>Administración</option>
+                <option>Encargado de tienda</option>
+                <option>Caja</option>
+                <option>Dueño</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div>
+              <label>Si es “Otro”, especifique</label>
+              <input name="autoriza_compras_otro" placeholder="Ej: Gerente general" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <header class="sectionHeader">
+          <div>
+            <h2>3) Consumo Operativo</h2>
+            <p>Esto nos permite dimensionar tu operación y asignarte el plan correcto.</p>
+          </div>
+          <div class="badge">Clave</div>
+        </header>
+
+        <div class="sectionBody">
+          <div class="grid">
+            <div>
+              <label>Frecuencia de compra</label>
+              <select name="consumo_frecuencia">
+                <option value="">Seleccione…</option>
+                <option>Varias veces por semana</option>
+                <option>Semanal</option>
+                <option>Quincenal</option>
+                <option>Mensual</option>
+                <option>Solo cuando se acaba</option>
+              </select>
+              <div class="hint">Operativo, no financiero.</div>
+            </div>
+            <div>
+              <label>Nota (opcional)</label>
+              <textarea name="consumo_nota" placeholder="Ej: se usa más los fines de semana"></textarea>
+              <div class="hint">Campo informativo.</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <label>Productos que utilizan (pueden marcar varios)</label>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Rollos térmicos"><span>Rollos térmicos</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Facturas / Comprobantes"><span>Facturas / Comprobantes</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Tinta / Tóner"><span>Tinta / Tóner</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Papel Bond"><span>Papel Bond</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Sobres / Carpetas"><span>Sobres / Carpetas</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Material de limpieza"><span>Material de limpieza</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Impresiones urgentes"><span>Impresiones urgentes</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Plastificados / Laminados"><span>Plastificados / Laminados</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Etiquetas / Stickers"><span>Etiquetas / Stickers</span></label>
+            <label class="check"><input type="checkbox" name="consumo_productos" value="Otro"><span>Otro</span></label>
+          </div>
+
+          <div style="margin-top:12px">
+            <label>Si marcó “Otro”, especifique</label>
+            <input name="consumo_productos_otro" placeholder="Ej: servilletas, guantes, etc." />
+          </div>
+
+          <div class="divider"></div>
+
+          <label>Lo más importante (elige máximo 2)</label>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="prioridades" value="Rapidez de entrega"><span>Rapidez de entrega</span></label>
+            <label class="check"><input type="checkbox" name="prioridades" value="Crédito para pagar luego"><span>Crédito para pagar luego</span></label>
+            <label class="check"><input type="checkbox" name="prioridades" value="Precios estables"><span>Precios estables</span></label>
+            <label class="check"><input type="checkbox" name="prioridades" value="Evitar quedarse sin material"><span>Evitar quedarse sin material</span></label>
+            <label class="check"><input type="checkbox" name="prioridades" value="Facturación organizada"><span>Facturación organizada</span></label>
+            <label class="check"><input type="checkbox" name="prioridades" value="Un solo proveedor"><span>Un solo proveedor</span></label>
+          </div>
+          <div class="hint">Si eliges más de 2, el sistema guardará solo las primeras 2.</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <header class="sectionHeader">
+          <div>
+            <h2>4) Activación de Cuenta Empresarial</h2>
+            <p>Incluye la facilidad de pago sin hacerlo “pesado”.</p>
+          </div>
+          <div class="badge">Opcional</div>
+        </header>
+
+        <div class="sectionBody">
+          <div class="grid">
+            <div>
+              <label>¿Desea facilidad de pago a 30 días?</label>
+              <select name="facilidad_30_dias">
+                <option value="">Seleccione…</option>
+                <option>Sí</option>
+                <option>Prefiero prepago</option>
+              </select>
+            </div>
+            <div>
+              <label>¿Cómo prefiere recibir estados de cuenta?</label>
+              <select name="estados_cuenta_por">
+                <option value="">Seleccione…</option>
+                <option>WhatsApp</option>
+                <option>Correo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <header class="sectionHeader">
+          <div>
+            <h2>5) Autorización</h2>
+            <p>Confirmación final para crear el código en el sistema.</p>
+          </div>
+          <div class="badge">Obligatorio</div>
+        </header>
+
+        <div class="sectionBody">
+          <p style="margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.45">
+            Autorizo a Código Empresarial a crear mi código empresarial y gestionar mis compras operativas bajo las condiciones comerciales acordadas.
+          </p>
+
+          <label class="check" style="display:flex;align-items:flex-start;gap:10px;margin:0">
+            <input type="checkbox" name="acepta_terminos" required />
+            <span><b style="display:block;font-size:12px">Acepto Términos y Política</b><span style="display:block;color:var(--muted);font-size:11px;margin-top:3px">Requerido para activar. Puedes leer: <a href="/terminos" target="_blank" rel="noopener">Términos</a> y <a href="/privacidad" target="_blank" rel="noopener">Privacidad</a>.</span></span>
+          </label>
+
+          <div class="divider"></div>
+
+          <div class="grid">
+            <div>
+              <label>Nombre</label>
+              <input name="autorizacion_nombre" placeholder="Nombre de quien autoriza" />
+            </div>
+            <div>
+              <label>Fecha</label>
+              <input name="autorizacion_fecha" placeholder="DD/MM/AAAA" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <button type="submit" id="realSubmit" style="display:none">Enviar</button>
+    </form>
+  </div>
+
+  <div class="ctaBar">
+    <div class="ctaInner">
+      <div class="ctaText">
+        <b>Enviar registro y activar</b>
+        <span>Al enviar, podrás confirmar por WhatsApp para completar la activación.</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn btnSecondary" type="button" onclick="scrollToTop()">↑ Subir</button>
+        <button class="btn" type="button" id="submitBtn">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+function scrollToTop() {
+      // Robust scroll-to-top across browsers (including iOS Safari)
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      } catch (e) {
+        window.scrollTo(0, 0);
+      }
+      // Fallbacks
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
       const topEl = document.querySelector(".container");
       if (topEl && topEl.scrollIntoView) {
+<<<<<<< HEAD
         try { topEl.scrollIntoView({ behavior: "smooth", block: "start" }); }
         catch(e) { topEl.scrollIntoView(true); }
       }
@@ -714,10 +1247,24 @@ input:focus,select:focus,textarea:focus{
             w.classList.add("show");
             setTimeout(() => w.classList.remove("show"), 2600);
           }
+=======
+        try { topEl.scrollIntoView({ behavior: "smooth", block: "start" }); } catch(e) { topEl.scrollIntoView(true); }
+      }
+    }
+
+const priorityChecks = Array.from(document.querySelectorAll('input[name="prioridades"]'));
+    priorityChecks.forEach(ch => {
+      ch.addEventListener('change', () => {
+        const checked = priorityChecks.filter(x => x.checked);
+        if (checked.length > 2) {
+          ch.checked = false;
+          alert("Selecciona máximo 2 prioridades.");
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
         }
       });
     });
 
+<<<<<<< HEAD
     // --- Stepper + navegación
     const form = document.getElementById("leadForm");
     const sections = Array.from(document.querySelectorAll("form#leadForm section.section"));
@@ -1164,6 +1711,20 @@ input:focus,select:focus,textarea:focus{
     })();
 </script>
 <script>
+=======
+    const submitBtn = document.getElementById("submitBtn");
+    const form = document.getElementById("leadForm");
+    submitBtn.addEventListener("click", () => {
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      form.submit();
+    });
+  </script>
+
+  <script>
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
     // reCAPTCHA v3: token for action "submit"
     (function(){
       const siteKey = "{{RECAPTCHA_SITE_KEY}}";
@@ -1189,5 +1750,9 @@ input:focus,select:focus,textarea:focus{
       document.getElementById("submitBtn")?.addEventListener("click", refreshToken);
     })();
   </script>
+<<<<<<< HEAD
+=======
+
+>>>>>>> cfbf8a0ab586bf5302c0b289fbeabde600f66e16
 </body>
 </html>
