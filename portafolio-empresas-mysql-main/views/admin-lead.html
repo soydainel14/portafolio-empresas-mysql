@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Lead | Portafolio Empresas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F6F8FB; --text:#0B1220; --stroke:rgba(11,18,32,.10);
+      --brand:#188888; --brand2:#2E9191;
+      --shadow:0 22px 60px rgba(11,18,32,.10);
+      --radius:18px;
+      --ok:#16A34A; --warn:#D97706; --bad:#EF4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 60px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .logo{height:44px;width:auto}
+    h1{margin:0;font-size:16px;font-weight:950}
+    .muted{color:rgba(11,18,32,.7);font-weight:800;font-size:12px}
+    .pill{padding:10px 12px;border-radius:999px;border:1px solid var(--stroke);background:rgba(255,255,255,.7);font-size:12px;font-weight:900;color:rgba(11,18,32,.75)}
+    .btn{
+      border:0;border-radius:14px;padding:12px 14px;
+      background: var(--brand);
+      color:#fff;font-weight:950;cursor:pointer;
+      box-shadow: 0 10px 22px rgba(24,136,136,.18);
+    }
+    .btn2{background:transparent;color:rgba(11,18,32,.85);border:1px solid rgba(11,18,32,.16);box-shadow:none}
+    .grid{display:grid;grid-template-columns: 1.2fr .8fr;gap:12px}
+    .card{border:1px solid var(--stroke);background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .kv{min-width:220px}
+    .kv b{display:block;font-size:12px;font-weight:950}
+    .kv span{display:block;margin-top:6px;color:rgba(11,18,32,.75);font-weight:800;font-size:12px;line-height:1.35}
+    label{display:block;font-size:12px;font-weight:950;margin:10px 0 6px}
+    textarea,select,input{width:100%;padding:12px;border-radius:14px;border:1px solid var(--stroke);outline:none;background:#fff}
+    textarea:focus,select:focus,input:focus{border-color:rgba(24,136,136,.6);box-shadow:0 0 0 4px rgba(24,136,136,.16)}
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);font-weight:950;font-size:12px}
+    .A{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.10)}
+    .B{border-color:rgba(217,119,6,.35);background:rgba(217,119,6,.10)}
+    .C{border-color:rgba(239,68,68,.30);background:rgba(239,68,68,.08)}
+    .list{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+    .note{border:1px solid var(--stroke);border-radius:16px;padding:10px;background:rgba(246,248,251,.7)}
+    .note .meta{display:flex;justify-content:space-between;gap:10px}
+    .note .meta div{font-size:11px;font-weight:900;color:rgba(11,18,32,.75)}
+    .note p{margin:8px 0 0;font-size:12px;font-weight:800;color:rgba(11,18,32,.9);white-space:pre-wrap}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <img class="logo" src="/assets/logo-portafolio.png" alt="Portafolio"/>
+        <div style="min-width:0">
+          <h1 id="title">Lead</h1>
+          <div class="muted" id="subtitle">—</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+        <a class="btn btn2" href="/admin" style="text-decoration:none;display:inline-block">Volver</a>
+        <div class="pill" id="scorePill">Score: —</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="row" id="kv"></div>
+      </div>
+
+      <div class="card">
+        <label>Status</label>
+        <div class="row" style="align-items:center">
+          <select id="status" style="flex:1">
+            <option value="NUEVO">NUEVO</option>
+            <option value="CONTACTADO">CONTACTADO</option>
+            <option value="APROBADO">APROBADO</option>
+            <option value="RECHAZADO">RECHAZADO</option>
+          </select>
+          <button class="btn btn2" id="saveStatus" style="margin-top:10px">Guardar</button>
+        </div>
+
+        <label>Owner</label>
+        <div class="row" style="align-items:center">
+          <select id="owner" style="flex:1"></select>
+          <button class="btn btn2" id="saveOwner" style="margin-top:10px">Asignar</button>
+        </div>
+
+        <label>WhatsApp</label>
+        <div class="row" style="align-items:center">
+          <select id="tpl" style="flex:1"></select>
+          <button class="btn btn2" id="openWa" style="margin-top:10px">Abrir</button>
+        </div>
+        <div class="muted" id="waWarn" style="margin-top:6px;display:none;color:var(--warn)"></div>
+
+        <label>Tareas / Recordatorios</label>
+        <textarea id="taskTitle" rows="2" placeholder="Ej: Llamar y confirmar datos"></textarea>
+        <div class="row" style="align-items:center">
+          <select id="taskDue" style="min-width:220px">
+            <option value="">Sin fecha</option>
+            <option value="today">Hoy (18:00)</option>
+            <option value="tomorrow">Mañana (10:00)</option>
+            <option value="3d">En 3 días (10:00)</option>
+          </select>
+          <button class="btn" id="addTask" style="margin-top:10px">Agregar tarea</button>
+        </div>
+        <div class="list">
+          <div class="muted" style="font-weight:950">Listado de tareas</div>
+          <div id="tasks"></div>
+        </div>
+
+        <label>Nota interna</label>
+        <textarea id="note" rows="4" placeholder="Escribe una nota interna (no visible al cliente)"></textarea>
+        <button class="btn" id="addNote" style="margin-top:10px">Guardar nota</button>
+
+        <div class="list">
+          <div class="muted" style="font-weight:950">Notas</div>
+          <div id="notes"></div>
+        </div>
+
+        <div class="list" style="margin-top:14px">
+          <div class="muted" style="font-weight:950">Historial status</div>
+          <div id="events"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id)=>document.getElementById(id);
+    const leadId = (()=>{
+      const m = window.location.pathname.match(/\/admin\/leads\/(\d+)/);
+      return m ? Number(m[1]) : 0;
+    })();
+
+    let currentLead = null;
+
+    function esc(s){
+      return String(s||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function fmtDate(s){
+      try{ return new Date(s).toLocaleString(); }catch{ return s; }
+    }
+
+    function tierTag(tier, score){
+      const c = tier || "C";
+      return `<span class="tag ${c}">${esc(c)} · ${esc(score ?? "—")}</span>`;
+    }
+
+    function kv(label, value){
+      return `<div class="kv"><b>${esc(label)}</b><span>${esc(value||"—")}</span></div>`;
+    }
+
+    function phoneDigits(s){ return String(s||"").replace(/\D/g, ""); }
+
+    function applyTemplate(body, lead){
+      return String(body||"")
+        .replaceAll("{id}", String(lead.id||""))
+        .replaceAll("{negocio}", String(lead.negocio_nombre_comercial||lead.negocio_razon_social||""))
+        .replaceAll("{responsable}", String(lead.responsable_nombre||""))
+        .replaceAll("{rnc}", String(lead.negocio_rnc||""));
+    }
+
+    async function loadUsers(){
+      const sel = $("owner");
+      sel.innerHTML = `<option value="">— sin asignar —</option>`;
+      const r = await fetch("/api/admin/users");
+      const j = await r.json();
+      if(!j.ok) return;
+      (j.rows||[]).forEach(u=>{
+        const opt = document.createElement("option");
+        opt.value = u.id;
+        opt.textContent = u.email;
+        sel.appendChild(opt);
+      });
+    }
+
+    async function loadTemplates(){
+      const sel = $("tpl");
+      sel.innerHTML = "";
+      const r = await fetch("/api/admin/templates");
+      const j = await r.json();
+      if(!j.ok) return;
+
+      (j.rows||[]).forEach(t=>{
+        const opt = document.createElement("option");
+        opt.value = t.id;
+        opt.textContent = (t.is_default ? "★ " : "") + t.name;
+        opt.dataset.body = t.body;
+        opt.dataset.default = t.is_default ? "1" : "0";
+        sel.appendChild(opt);
+      });
+      const def = Array.from(sel.options).find(o=>o.dataset.default==="1");
+      if(def) sel.value = def.value;
+    }
+
+    async function loadTasks(){
+      const host = $("tasks");
+      host.innerHTML = "";
+      const r = await fetch(`/api/admin/lead/${leadId}/tasks`);
+      const j = await r.json();
+      if(!j.ok){ host.innerHTML = `<div class="muted">No disponible.</div>`; return; }
+      const rows = j.rows || [];
+      if(!rows.length){ host.innerHTML = `<div class="muted">Sin tareas.</div>`; return; }
+
+      rows.forEach(t=>{
+        const div = document.createElement("div");
+        div.className = "note";
+        const due = t.due_at ? ` · vence ${esc(fmtDate(t.due_at))}` : "";
+        div.innerHTML = `
+          <div class="meta">
+            <div>${t.done ? "✅" : "⏳"} ${esc(t.title||"")}${due}</div>
+            <div>${esc(fmtDate(t.created_at))}</div>
+          </div>
+          <div style="margin-top:8px">
+            <button class="btn btn2" data-id="${t.id}" data-done="${t.done?0:1}">${t.done?"Marcar pendiente":"Marcar done"}</button>
+          </div>
+        `;
+        host.appendChild(div);
+      });
+
+      host.querySelectorAll("[data-id]").forEach(btn=>{
+        btn.addEventListener("click", async ()=>{
+          const id = btn.getAttribute("data-id");
+          const done = Number(btn.getAttribute("data-done")) ? 1 : 0;
+          await fetch(`/api/admin/task/${id}/toggle`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({ done })
+          });
+          await loadTasks();
+        });
+      });
+    }
+
+    function duePresetToISO(preset){
+      const now = new Date();
+      const d = new Date(now);
+      if(preset==="today"){
+        d.setHours(18,0,0,0);
+      } else if(preset==="tomorrow"){
+        d.setDate(d.getDate()+1);
+        d.setHours(10,0,0,0);
+      } else if(preset==="3d"){
+        d.setDate(d.getDate()+3);
+        d.setHours(10,0,0,0);
+      } else {
+        return "";
+      }
+      return d.toISOString();
+    }
+
+    async function load(){
+      if(!leadId) return;
+      const r = await fetch(`/api/admin/lead/${leadId}`);
+      const j = await r.json();
+      if(!j.ok) {
+        $("title").textContent = "Lead no encontrado";
+        return;
+      }
+
+      const lead = j.lead;
+      currentLead = lead;
+
+      $("title").textContent = `Lead #${lead.id}`;
+      $("subtitle").textContent = `Creado: ${fmtDate(lead.created_at)} · Actualizado: ${fmtDate(lead.updated_at || lead.created_at)}`;
+      $("scorePill").innerHTML = `Score: ${tierTag(lead.score_tier, lead.score)}`;
+      $("status").value = (lead.status || "NUEVO").toUpperCase();
+
+      const kvWrap = $("kv");
+      kvWrap.innerHTML = [
+        kv("Negocio", lead.negocio_nombre_comercial),
+        kv("Razón social", lead.negocio_razon_social),
+        kv("RNC", `${lead.negocio_rnc || ""} ${lead.rnc_estado ? "("+lead.rnc_estado+")" : ""}`.trim()),
+        kv("Actividad", lead.negocio_actividad),
+        kv("Empleados", lead.negocio_empleados),
+        kv("Responsable", lead.responsable_nombre),
+        kv("WhatsApp", lead.responsable_whatsapp),
+        kv("Email", lead.responsable_email),
+        kv("Frecuencia", lead.consumo_frecuencia),
+        kv("Prioridades", lead.prioridades),
+        kv("Facilidad 30 días", lead.facilidad_30_dias)
+      ].join("");
+
+      // owner + templates
+      await Promise.all([loadUsers(), loadTemplates(), loadTasks()]);
+      $("owner").value = lead.owner_admin_id ? String(lead.owner_admin_id) : "";
+
+      // warn si rnc no activo
+      const est = String(lead.rnc_estado||"").toUpperCase();
+      const warn = $("waWarn");
+      if(est && est !== "ACTIVO"){
+        warn.style.display = "block";
+        warn.textContent = `Atención: este RNC figura como ${est}.`;
+      } else {
+        warn.style.display = "none";
+      }
+
+      // notas
+      const notes = $("notes");
+      notes.innerHTML = "";
+      (j.notes||[]).forEach(n=>{
+        const div = document.createElement("div");
+        div.className = "note";
+        div.innerHTML = `
+          <div class="meta">
+            <div>${esc(n.admin_email||"")}</div>
+            <div>${esc(fmtDate(n.created_at))}</div>
+          </div>
+          <p>${esc(n.note||"")}</p>
+        `;
+        notes.appendChild(div);
+      });
+      if(!(j.notes||[]).length) notes.innerHTML = `<div class="muted">Sin notas.</div>`;
+
+      // events
+      const events = $("events");
+      events.innerHTML = "";
+      (j.events||[]).forEach(e=>{
+        const div = document.createElement("div");
+        div.className = "note";
+        div.innerHTML = `
+          <div class="meta">
+            <div>${esc(e.admin_email||"")}</div>
+            <div>${esc(fmtDate(e.created_at))}</div>
+          </div>
+          <p>${esc((e.from_status||"—") + " → " + (e.to_status||""))}</p>
+        `;
+        events.appendChild(div);
+      });
+      if(!(j.events||[]).length) events.innerHTML = `<div class="muted">Sin historial.</div>`;
+    }
+
+    $("saveStatus").addEventListener("click", async (e)=>{
+      e.preventDefault();
+      const status = $("status").value;
+      $("saveStatus").disabled = true;
+      await fetch(`/api/admin/lead/${leadId}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status })
+      });
+      $("saveStatus").disabled = false;
+      await load();
+    });
+
+    $("saveOwner").addEventListener("click", async (e)=>{
+      e.preventDefault();
+      const owner_admin_id = $("owner").value || null;
+      $("saveOwner").disabled = true;
+      await fetch(`/api/admin/lead/${leadId}/assign`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ owner_admin_id })
+      });
+      $("saveOwner").disabled = false;
+      await load();
+    });
+
+    $("openWa").addEventListener("click", (e)=>{
+      e.preventDefault();
+      if(!currentLead) return;
+      const to = phoneDigits(currentLead.responsable_whatsapp);
+      if(!to) return alert("Este lead no tiene WhatsApp.");
+      const opt = $("tpl").selectedOptions[0];
+      const body = opt ? opt.dataset.body : "";
+      const msg = applyTemplate(body, currentLead);
+      const url = `https://wa.me/${encodeURIComponent(to)}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+    });
+
+    $("addTask").addEventListener("click", async (e)=>{
+      e.preventDefault();
+      const title = $("taskTitle").value.trim();
+      if(!title) return;
+      const preset = $("taskDue").value;
+      const due_at = duePresetToISO(preset);
+      $("addTask").disabled = true;
+      await fetch(`/api/admin/lead/${leadId}/tasks`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ title, due_at })
+      });
+      $("taskTitle").value = "";
+      $("taskDue").value = "";
+      $("addTask").disabled = false;
+      await loadTasks();
+    });
+
+    $("addNote").addEventListener("click", async (e)=>{
+      e.preventDefault();
+      const note = $("note").value.trim();
+      if(!note) return;
+      $("addNote").disabled = true;
+      await fetch(`/api/admin/lead/${leadId}/notes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ note })
+      });
+      $("note").value = "";
+      $("addNote").disabled = false;
+      await load();
+    });
+
+    load();
+  </script>
+</body>
+</html>

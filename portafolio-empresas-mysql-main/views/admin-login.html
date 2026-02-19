@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin | Portafolio Empresas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F6F8FB; --text:#0B1220; --stroke:rgba(11,18,32,.10);
+      --brand:#188888; --brand2:#2E9191;
+      --shadow:0 22px 60px rgba(11,18,32,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text)}
+    .wrap{max-width:520px;margin:0 auto;padding:34px 16px}
+    .card{border:1px solid var(--stroke);background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .logo{height:44px;width:auto}
+    h1{margin:0;font-size:16px;font-weight:950}
+    p{margin:6px 0 0;color:rgba(11,18,32,.7);font-weight:700;font-size:12px;line-height:1.35}
+    label{display:block;font-size:12px;font-weight:900;margin:12px 0 6px}
+    input{width:100%;padding:12px;border-radius:14px;border:1px solid var(--stroke);outline:none}
+    input:focus{border-color:rgba(24,136,136,.6);box-shadow:0 0 0 4px rgba(24,136,136,.16)}
+    .btn{
+      margin-top:14px;width:100%;
+      border:0;border-radius:14px;padding:12px;
+      background: var(--brand);
+      color:#fff;font-weight:950;cursor:pointer;
+      box-shadow: 0 10px 22px rgba(24,136,136,.18);
+    }
+    .hint{margin-top:10px;font-size:11px;font-weight:800;color:rgba(11,18,32,.7)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="head">
+        <img class="logo" src="/assets/logo-portafolio.png" alt="Portafolio"/>
+        <div>
+          <h1>Admin · Portafolio Empresas</h1>
+          <p>Acceso seguro para ver y calificar leads.</p>
+        </div>
+      </div>
+
+      <form method="POST" action="/admin/login">
+        <label>Email</label>
+        <input name="email" type="email" required placeholder="admin@portafolio.do"/>
+
+        <label>Password</label>
+        <input name="password" type="password" required placeholder="••••••••"/>
+
+        <button class="btn" type="submit">Entrar</button>
+        <div class="hint">Configura ADMIN_EMAIL / ADMIN_PASSWORD y JWT_SECRET en tu .env.</div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

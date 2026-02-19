@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Código Empresarial | Registro recibido</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F6F8FB;--text:#0B1220;--muted:rgba(11,18,32,.70);
+      --stroke:rgba(11,18,32,.10);--brand:#188888;--brand2:#2E9191;
+      --shadow:0 22px 60px rgba(11,18,32,.10);--radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);
+      background:
+        radial-gradient(1200px 540px at 10% -10%, rgba(24,136,136,.14), transparent 60%),
+        radial-gradient(900px 520px at 90% -10%, rgba(46,145,145,.10), transparent 55%),
+        var(--bg);
+      display:flex;align-items:center;justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:min(720px, 100%);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.85);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .head{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    .badge{
+      width:44px;height:44px;border-radius:16px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      display:flex;align-items:center;justify-content:center;
+      color:white;font-weight:900;box-shadow:0 12px 26px rgba(24,136,136,.22);
+      flex:0 0 auto;
+    }
+    h1{margin:0;font-size:22px;font-weight:950;letter-spacing:-.03em}
+    p{margin:10px 0;color:var(--muted);line-height:1.45}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn{
+      appearance:none;border:0;cursor:pointer;text-decoration:none;
+      padding:12px 14px;border-radius:14px;font-weight:950;font-size:13px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:white;display:inline-flex;align-items:center;gap:10px;
+      box-shadow:0 12px 26px rgba(24,136,136,.22);
+    }
+    .btn2{
+      background:transparent;color:rgba(11,18,32,.88);
+      border:1px solid rgba(11,18,32,.16);
+      box-shadow:none;
+    }
+    .hint{font-size:11px;color:var(--muted);margin-top:10px}
+    @media (max-width:540px){
+      h1{font-size:20px}
+      .btn{width:100%;justify-content:center}
+    }
+    .brandLogo{height:40px;width:auto;display:block;margin:0 auto 12px}
+  </style>
+<!-- Optional Tracking (no se activa si IDs vacíos) -->
+<script>
+  (function(){
+    const fb = "{{FB_PIXEL_ID}}";
+    if(fb){
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', fb);
+      fbq('track', 'PageView');
+    }
+    const ga = "{{GA_MEASUREMENT_ID}}";
+    if(ga){
+      const s1=document.createElement('script'); s1.async=true; s1.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(ga);
+      document.head.appendChild(s1);
+      window.dataLayer=window.dataLayer||[];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag=gtag;
+      gtag('js', new Date());
+      gtag('config', ga);
+    }
+  })();
+</script>
+</head>
+<body>
+  <div class="card">
+    <img class="brandLogo" src="/assets/logo-portafolio.png" alt="Código Empresarial" />
+    <div class="head">
+      <div class="badge">✓</div>
+      <div>
+        <h1>¡Listo! Registro recibido 🎉</h1>
+        <div class="hint">Siguiente paso recomendado: confirmar por WhatsApp.</div>
+      </div>
+    </div>
+
+    <p>Ya estás en proceso de activación empresarial con Portafolio. En las próximas horas te asignaremos tu código y podrás comprar sin preocuparte por urgencias.</p>
+
+    <div class="btns">
+      <a class="btn" id="waBtn" href="#" target="_blank" rel="noopener">Enviar WhatsApp</a>
+      <a class="btn btn2" href="/" rel="nofollow">Registrar otro negocio</a>
+    </div>
+
+    <p class="hint">Si WhatsApp no abre, revisa que tengas la app instalada o prueba desde el navegador.</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const wa = params.get("wa");
+    const waLink = wa ? decodeURIComponent(wa) : "https://wa.me/";
+    const btn = document.getElementById("waBtn");
+    btn.href = waLink;
+
+    // Auto-open WhatsApp (best-effort). If blocked, user can tap the button.
+    setTimeout(() => {
+      try { window.location.href = waLink; } catch (e) {}
+    }, 900);
+  </script>
+<script>(function(){ if(window.fbq){ try{ fbq('track','Lead'); }catch(e){} } })();</script>
+</body>
+</html>
