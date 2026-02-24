@@ -114,12 +114,16 @@
     const wa = params.get("wa");
     const waLink = wa ? decodeURIComponent(wa) : "https://wa.me/";
     const btn = document.getElementById("waBtn");
-    btn.href = waLink;
+    if (btn) {
+      btn.href = waLink;
+    }
 
     // Auto-open WhatsApp (best-effort). If blocked, user can tap the button.
-    setTimeout(() => {
-      try { window.location.href = waLink; } catch (e) {}
-    }, 900);
+    if (wa) {
+      setTimeout(() => {
+        try { window.location.assign(waLink); } catch (e) { console.error("Auto-open blocked", e); }
+      }, 1200);
+    }
   </script>
 <script>(function(){ if(window.fbq){ try{ fbq('track','Lead'); }catch(e){} } })();</script>
 </body>

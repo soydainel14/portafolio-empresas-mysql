@@ -63,7 +63,7 @@
         </div>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
-        <a class="btn btn2" href="/admin" style="text-decoration:none;display:inline-block">Volver</a>
+        <a class="btn btn2" href="javascript:history.back()" style="text-decoration:none;display:inline-block">Volver</a>
         <div class="pill" id="scorePill">Score: —</div>
       </div>
     </div>
@@ -343,13 +343,26 @@
     $("saveStatus").addEventListener("click", async (e)=>{
       e.preventDefault();
       const status = $("status").value;
-      $("saveStatus").disabled = true;
-      await fetch(`/api/admin/lead/${leadId}/status`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status })
-      });
-      $("saveStatus").disabled = false;
+      const btn = $("saveStatus");
+      const oldText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "...";
+      try {
+        const r = await fetch(`/api/admin/lead/${leadId}/status`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status })
+        });
+        const j = await r.json();
+        if(j.ok) {
+          btn.style.background = "var(--ok)";
+          setTimeout(() => { btn.style.background = ""; btn.textContent = oldText; }, 1000);
+        }
+      } catch(err) {
+        console.error(err);
+      }
+      btn.disabled = false;
+      btn.textContent = oldText;
       await load();
     });
 

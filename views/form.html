@@ -1036,7 +1036,17 @@ input:focus,select:focus,textarea:focus{
     });
     summaryConfirm?.addEventListener("click", async (e) => {
       e.preventDefault();
-      await handleSubmit();
+      const btn = e.currentTarget;
+      const oldText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Enviando...";
+      try {
+        await handleSubmit();
+      } catch(err) {
+        console.error(err);
+      }
+      btn.disabled = false;
+      btn.textContent = oldText;
     });
 
     // si alguien intenta submit (enter), redirige al flujo
